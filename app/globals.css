@@ -1,0 +1,120 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  color: #fff;
+  background: #050505;
+  overflow-x: hidden;
+}
+
+.font-logo {
+  font-family: var(--font-logo), cursive;
+}
+
+.font-geo {
+  font-family: var(--font-geo), "Century Gothic", "Futura", sans-serif;
+}
+
+/* Efecto Grid de fondo tipo Agencia */
+.bg-grid-small {
+  background-size: 40px 40px;
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+}
+
+html { scroll-behavior: smooth; }
+
+@keyframes gradient-move {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient {
+  background-size: 200% auto;
+  animation: gradient-move 5s ease-in-out infinite;
+}
+
+@keyframes gradient-wave {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 400% 50%;
+  }
+}
+
+.animate-gradient-wave {
+  background-size: 400% 100%;
+  background-repeat: repeat;
+  animation: gradient-wave 12s linear infinite;
+}
+
+.modal-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #ec4899 #0b0b0f;
+  scrollbar-gutter: stable;
+}
+
+.modal-scrollbar::-webkit-scrollbar {
+  width: 10px;
+}
+
+.modal-scrollbar::-webkit-scrollbar-track {
+  background: #0b0b0f;
+  border-radius: 999px;
+}
+
+.modal-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #60a5fa, #a855f7, #ec4899);
+  border-radius: 999px;
+  border: 2px solid #0b0b0f;
+}
+
+@media (max-width: 640px) {
+  .modal-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .modal-scrollbar::-webkit-scrollbar-thumb {
+    border-width: 1px;
+  }
+}
+
+.modal-frame {
+  position: relative;
+  border-radius: var(--modal-radius, 24px);
+  padding: var(--modal-border, 2px);
+  overflow: visible;
+  background: linear-gradient(90deg, #ffffff, #60a5fa, #a855f7, #ec4899, #ffffff);
+  background-size: 400% 100%;
+  background-repeat: repeat;
+  animation: gradient-wave 12s linear infinite;
+  box-shadow: 0 0 30px rgba(168, 85, 247, 0.35), 0 0 80px rgba(59, 130, 246, 0.2);
+}
+
+.modal-frame::before {
+  content: "";
+  position: absolute;
+  inset: calc(var(--modal-border, 2px) * -2);
+  border-radius: inherit;
+  background: linear-gradient(90deg, #ffffff, #60a5fa, #a855f7, #ec4899, #ffffff);
+  background-size: 400% 100%;
+  filter: blur(18px);
+  opacity: 0.6;
+  z-index: 0;
+  animation: gradient-wave 12s linear infinite;
+}
+
+.modal-panel {
+  position: relative;
+  z-index: 1;
+  border-radius: calc(var(--modal-radius, 24px) - var(--modal-border, 2px));
+}
