@@ -2,26 +2,43 @@ import {defineField, defineType} from 'sanity'
 
 export default defineType({
   name: 'project',
-  title: 'Proyecto',
+  title: 'Portafolio',
   type: 'document',
   fields: [
     defineField({
       name: 'title',
-      title: 'Título',
+      title: 'T\u00edtulo',
       type: 'string',
     }),
     defineField({
       name: 'description',
-      title: 'Descripción',
+      title: 'Descripci\u00f3n',
       type: 'text',
     }),
     defineField({
       name: 'image',
-      title: 'Imagen',
+      title: 'Imagen principal',
       type: 'image',
       options: {
         hotspot: true,
       },
     }),
+    defineField({
+      name: 'link',
+      title: 'Enlace',
+      type: 'url',
+    }),
+    defineField({
+      name: 'order',
+      title: 'Orden',
+      type: 'number',
+      description: 'Menor = primero',
+    }),
   ],
+  preview: {
+    select: {
+      title: 'title',
+      media: 'image',
+    },
+  },
 })

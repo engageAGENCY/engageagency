@@ -12,22 +12,26 @@ function urlFor(source: any) {
 const hardcodedPortfolioItems = [
   {
     title: "Proyecto Alfa",
-    description: "Una solución de comercio electrónico completa con un diseño personalizado y optimización para motores de búsqueda.",
+    description:
+      "Una soluci\u00f3n de comercio electr\u00f3nico completa con un dise\u00f1o personalizado y optimizaci\u00f3n para motores de b\u00fasqueda.",
     image: "/placeholder-image.png",
   },
   {
     title: "Proyecto Beta",
-    description: "Desarrollo de una aplicación web interactiva para la gestión de eventos y la venta de entradas.",
+    description:
+      "Desarrollo de una aplicaci\u00f3n web interactiva para la gesti\u00f3n de eventos y la venta de entradas.",
     image: "/placeholder-image.png",
   },
   {
     title: "Proyecto Gamma",
-    description: "Creación de una identidad de marca moderna y un sitio web corporativo para una startup tecnológica.",
+    description:
+      "Creaci\u00f3n de una identidad de marca moderna y un sitio web corporativo para una startup tecnol\u00f3gica.",
     image: "/placeholder-image.png",
   },
   {
     title: "Proyecto Delta",
-    description: "Diseño y desarrollo de una plataforma de aprendizaje en línea con contenido de video y seguimiento del progreso.",
+    description:
+      "Dise\u00f1o y desarrollo de una plataforma de aprendizaje en l\u00ednea con contenido de video y seguimiento del progreso.",
     image: "/placeholder-image.png",
   },
 ];
@@ -47,30 +51,37 @@ const Portfolio = async () => {
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-10 sm:mb-12">
           <div>
             <h2 className="text-3xl sm:text-4xl font-display uppercase">Portafolio de Trabajo</h2>
-            <p className="text-zinc-400 text-sm sm:text-base mt-2 text-balance">Proyectos que combinan diseño, tecnología y estrategia.</p>
+            <p className="text-zinc-400 text-sm sm:text-base mt-2 text-balance">
+              Proyectos que combinan dise\u00f1o, tecnolog\u00eda y estrategia.
+            </p>
           </div>
           <span className="text-xs uppercase tracking-[0.3em] text-zinc-500">Casos de Estudio</span>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
           {projects.map((item: any, index: number) => (
-            <div key={index} className="bg-zinc-900 rounded-2xl border border-white/10 overflow-hidden flex flex-col shadow-lg shadow-black/20">
-                {item.image && (item.image.src || item.image.asset) ? (
-                  <div className="relative w-full aspect-[4/3]">
-                    <Image
-                      src={item.image.src || urlFor(item.image).width(800).height(600).url()}
-                      alt={item.title}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
-                    />
-                  </div>
-                ) : (
-                  <div className="relative w-full aspect-[4/3] flex items-center justify-center text-zinc-500 font-mono text-xs">IMAGEN NO DISPONIBLE</div>
-                )}
-                <div className="p-5 sm:p-6 flex flex-col gap-2">
-                  <h3 className="text-xl sm:text-2xl font-bold">{item.title}</h3>
-                  <p className="text-zinc-400 text-sm sm:text-base text-balance">{item.description}</p>
+            <div
+              key={index}
+              className="bg-zinc-900 rounded-2xl border border-white/10 overflow-hidden flex flex-col shadow-lg shadow-black/20"
+            >
+              {item.image && (item.image.src || item.image.asset) ? (
+                <div className="relative w-full aspect-[4/3]">
+                  <Image
+                    src={item.image.src || urlFor(item.image).width(800).height(600).url()}
+                    alt={item.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
+                  />
                 </div>
+              ) : (
+                <div className="relative w-full aspect-[4/3] flex items-center justify-center text-zinc-500 font-mono text-xs">
+                  IMAGEN NO DISPONIBLE
+                </div>
+              )}
+              <div className="p-5 sm:p-6 flex flex-col gap-2">
+                <h3 className="text-xl sm:text-2xl font-bold">{item.title}</h3>
+                <p className="text-zinc-400 text-sm sm:text-base text-balance">{item.description}</p>
+              </div>
             </div>
           ))}
         </div>
