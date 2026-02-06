@@ -22,8 +22,32 @@ const glacial = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Agencia Premium",
-  description: "Generado por Script de Python",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://engagencydo.com"),
+  title: "Engage Agency",
+  description:
+    "Somos un grupo creativo comprometidos de llevar tu marca al pr\u00f3ximo nivel en el mundo digital.",
+  openGraph: {
+    title: "Engage Agency",
+    description:
+      "Somos un grupo creativo comprometidos de llevar tu marca al pr\u00f3ximo nivel en el mundo digital.",
+    type: "website",
+    siteName: "Engage Agency",
+    images: [
+      {
+        url: "/logo-engage.jpg",
+        width: 800,
+        height: 800,
+        alt: "Engage Agency",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Engage Agency",
+    description:
+      "Somos un grupo creativo comprometidos de llevar tu marca al pr\u00f3ximo nivel en el mundo digital.",
+    images: ["/logo-engage.jpg"],
+  },
 };
 
 import Header from "@/components/layout/Header";
