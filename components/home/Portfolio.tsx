@@ -64,12 +64,12 @@ const Portfolio = async () => {
               className="bg-zinc-900 rounded-2xl border border-white/10 overflow-hidden flex flex-col shadow-lg shadow-black/20"
             >
               {item.image && (item.image.src || item.image.asset) ? (
-                <div className="relative w-full aspect-[4/3]">
+                <div className="relative w-full aspect-[4/3] bg-black/80">
                   <Image
                     src={item.image.src || urlFor(item.image).width(800).height(600).url()}
                     alt={item.title}
                     fill
-                    className="object-cover"
+                    className="object-contain p-6"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
                   />
                 </div>
