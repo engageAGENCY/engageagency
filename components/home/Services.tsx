@@ -32,6 +32,9 @@ const Services = async () => {
   let services = [];
   try {
     services = await getServices();
+    if (!services || services.length === 0) {
+      services = hardcodedServices;
+    }
   } catch (error) {
     console.error("Fall\u00f3 al obtener los servicios de Sanity, usando datos predefinidos:", error);
     services = hardcodedServices;
