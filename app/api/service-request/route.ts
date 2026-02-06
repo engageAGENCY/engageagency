@@ -130,15 +130,15 @@ export async function POST(request: Request) {
     pushLine("Empresa", data.companyName);
     pushLine("RNC", data.companyRnc);
     pushLine("Email", data.contactEmail);
-    pushLine("Teléfono", data.contactPhone);
+    pushLine("Tel\u00e9fono", data.contactPhone);
     pushLine("Usuario Social", data.socialHandle);
-    pushLine("Descripción de Marca", data.brandDescription);
+    pushLine("Descripci\u00f3n de Marca", data.brandDescription);
     pushLine("Servicios Ofrecidos", data.servicesOffered);
-    pushLine("Servicios de Interés", interestSummary);
+    pushLine("Servicios de Inter\u00e9s", interestSummary);
     pushLine("Problema Actual", data.currentProblem);
     pushLine("Plan Redes Sociales", data.needsSocialPlan ? socialPlanSummary : "-");
     pushLine("Presupuesto", budgetSummary);
-    pushLine("Cómo se Enteró", data.source);
+    pushLine("C\u00f3mo se Enter\u00f3", data.source);
 
     const html = `
       <div style="font-family: Arial, sans-serif; color: #111;">

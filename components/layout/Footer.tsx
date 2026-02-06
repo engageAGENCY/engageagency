@@ -10,21 +10,22 @@ const Footer = () => {
         <div>
           <h3 className="text-xl font-bold mb-4">Acerca de Nosotros</h3>
           <p className="text-gray-200/80">
-            Somos un equipo de profesionales apasionados por la tecnología y el diseño. Nos dedicamos a crear soluciones innovadoras que impulsen el crecimiento de nuestros clientes.
+            Somos un equipo altamente capacitado. Con el conocimiento y el granito de arena de cada miembro,
+            construimos una gran familia que aporta y genera las mejores ideas para sus proyectos.
           </p>
         </div>
         <div>
-          <h3 className="text-xl font-bold mb-4">Enlaces Rápidos</h3>
+          <h3 className="text-xl font-bold mb-4">Enlaces R&aacute;pidos</h3>
           <ul className="space-y-2 text-gray-200/80">
             <li><Link href="/career" className="hover:text-white">Carrera</Link></li>
             <li><Link href="/about" className="hover:text-white">Acerca de Nosotros</Link></li>
             <li><Link href="/faq" className="hover:text-white">Preguntas Frecuentes</Link></li>
-            <li><Link href="/contact" className="hover:text-white">Contáctanos</Link></li>
+            <li><Link href="/contact" className="hover:text-white">Cont&aacute;ctanos</Link></li>
           </ul>
         </div>
         <div>
-          <h3 className="text-xl font-bold mb-4">Información de Contacto</h3>
-          <p className="text-gray-200/80">Ubicación: Santo Domingo, Rep. Dom.</p>
+          <h3 className="text-xl font-bold mb-4">Informaci&oacute;n de Contacto</h3>
+          <p className="text-gray-200/80">Ubicaci&oacute;n: Santo Domingo, Rep. Dom.</p>
           <p className="text-gray-200/80">
             WhatsApp:{" "}
             <a href="https://wa.me/18093902905" className="text-white/90 hover:text-white">
@@ -32,7 +33,7 @@ const Footer = () => {
             </a>
           </p>
           <p className="text-gray-200/80">
-            Teléfono:{" "}
+            Tel&eacute;fono:{" "}
             <a href="tel:+18097569944" className="text-white/90 hover:text-white">
               +1 809-756-9944
             </a>
