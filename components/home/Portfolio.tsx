@@ -52,10 +52,10 @@ const Portfolio = async () => {
           <div>
             <h2 className="text-3xl sm:text-4xl font-display uppercase">Portafolio de Trabajo</h2>
             <p className="text-zinc-400 text-sm sm:text-base mt-2 text-balance">
-              Proyectos que combinan dise\u00f1o, tecnolog\u00eda y estrategia.
+              Proyectos que combinan dise&ntilde;o, tecnolog&iacute;a y estrategia.
             </p>
           </div>
-          <span className="text-xs uppercase tracking-[0.3em] text-zinc-500">Casos de Estudio</span>
+          <span className="text-xs uppercase tracking-[0.3em] text-zinc-500">Proyectos destacados</span>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
           {projects.map((item: any, index: number) => (
