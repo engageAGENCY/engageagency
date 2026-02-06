@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const navLinks = [
@@ -16,8 +17,13 @@ const navArrowClass =
   "text-[1.2rem] leading-none relative -top-[2px] transition-transform duration-200 ease-out group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:scale-110";
 
 const Header = () => {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  if (pathname?.startsWith("/studio")) {
+    return null;
+  }
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
