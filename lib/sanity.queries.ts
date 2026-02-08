@@ -1,7 +1,15 @@
 import {groq} from 'next-sanity'
 import {client} from './sanity.client'
 
-export const projectsQuery = groq`*[_type == "project"] | order(order asc, _createdAt desc)`
+export const projectsQuery = groq`*[_type == "project"] | order(order asc, _createdAt desc){
+  ...,
+  "slug": slug.current
+}`
+export const projectBySlugQuery = groq`*[_type == "project" && slug.current == $slug][0]{
+  ...,
+  "slug": slug.current
+}`
+export const projectSlugsQuery = groq`*[_type == "project" && defined(slug.current)].slug.current`
 export const teamMembersQuery = groq`*[_type == "teamMember"]`
 export const servicesQuery = groq`*[_type == "service"] | order(number asc)`
 export const testimonialsQuery = groq`*[_type == "testimonial"]`
@@ -9,6 +17,14 @@ export const heroQuery = groq`*[_type == "hero"][0]`
 
 export async function getProjects() {
   return client.fetch(projectsQuery)
+}
+
+export async function getProjectBySlug(slug: string) {
+  return client.fetch(projectBySlugQuery, { slug })
+}
+
+export async function getProjectSlugs() {
+  return client.fetch(projectSlugsQuery)
 }
 
 export async function getTeamMembers() {

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import imageUrlBuilder from "@sanity/image-url";
 import { getProjects } from "@/lib/sanity.queries";
 import { client } from "@/lib/sanity.client";
@@ -52,38 +53,54 @@ const Portfolio = async () => {
           <div>
             <h2 className="text-3xl sm:text-4xl font-display uppercase">Portafolio de Trabajo</h2>
             <p className="text-zinc-400 text-sm sm:text-base mt-2 text-balance">
-              Proyectos que combinan dise&ntilde;o, tecnolog&iacute;a y estrategia.
+              Trabajo real, resultados medibles y marcas con car&aacute;cter.
             </p>
           </div>
           <span className="text-xs uppercase tracking-[0.3em] text-zinc-500">Proyectos destacados</span>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-          {projects.map((item: any, index: number) => (
-            <div
-              key={index}
-              className="bg-zinc-900 rounded-2xl border border-white/10 overflow-hidden flex flex-col shadow-lg shadow-black/20"
-            >
-              {item.image && (item.image.src || item.image.asset) ? (
-                <div className="relative w-full aspect-[4/3]">
-                  <Image
-                    src={item.image.src || urlFor(item.image).width(800).height(600).url()}
-                    alt={item.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
-                  />
+          {projects.map((item: any, index: number) => {
+            const card = (
+              <>
+                {item.image && (item.image.src || item.image.asset) ? (
+                  <div className="relative w-full aspect-[4/3]">
+                    <Image
+                      src={item.image.src || urlFor(item.image).width(800).height(600).url()}
+                      alt={item.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
+                    />
+                  </div>
+                ) : (
+                  <div className="relative w-full aspect-[4/3] flex items-center justify-center text-zinc-500 font-mono text-xs">
+                    IMAGEN NO DISPONIBLE
+                  </div>
+                )}
+                <div className="p-5 sm:p-6 flex flex-col gap-2">
+                  <h3 className="text-xl sm:text-2xl font-bold">{item.title}</h3>
+                  <p className="text-zinc-400 text-sm sm:text-base text-balance">{item.description}</p>
                 </div>
-              ) : (
-                <div className="relative w-full aspect-[4/3] flex items-center justify-center text-zinc-500 font-mono text-xs">
-                  IMAGEN NO DISPONIBLE
-                </div>
-              )}
-              <div className="p-5 sm:p-6 flex flex-col gap-2">
-                <h3 className="text-xl sm:text-2xl font-bold">{item.title}</h3>
-                <p className="text-zinc-400 text-sm sm:text-base text-balance">{item.description}</p>
+              </>
+            );
+
+            return item.slug ? (
+              <Link
+                key={index}
+                href={`/proyectos/${item.slug}`}
+                className="bg-zinc-900 rounded-2xl border border-white/10 overflow-hidden flex flex-col shadow-lg shadow-black/20 transition-transform duration-200 hover:-translate-y-1"
+              >
+                {card}
+              </Link>
+            ) : (
+              <div
+                key={index}
+                className="bg-zinc-900 rounded-2xl border border-white/10 overflow-hidden flex flex-col shadow-lg shadow-black/20"
+              >
+                {card}
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

@@ -11,8 +11,18 @@ export default defineType({
       type: 'string',
     }),
     defineField({
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      options: {
+        source: 'title',
+        maxLength: 96,
+      },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: 'description',
-      title: 'Descripci\u00f3n',
+      title: 'Resumen corto',
       type: 'text',
     }),
     defineField({
@@ -22,6 +32,79 @@ export default defineType({
       options: {
         hotspot: true,
       },
+    }),
+    defineField({
+      name: 'client',
+      title: 'Cliente',
+      type: 'string',
+    }),
+    defineField({
+      name: 'year',
+      title: 'A\u00f1o',
+      type: 'number',
+    }),
+    defineField({
+      name: 'services',
+      title: 'Servicios aplicados',
+      type: 'array',
+      of: [{type: 'string'}],
+    }),
+    defineField({
+      name: 'results',
+      title: 'Resultados',
+      type: 'array',
+      of: [{type: 'string'}],
+    }),
+    defineField({
+      name: 'body',
+      title: 'Historia del proyecto',
+      type: 'array',
+      of: [
+        {type: 'block'},
+        {
+          type: 'image',
+          options: {hotspot: true},
+          fields: [
+            {
+              name: 'alt',
+              title: 'Texto alternativo',
+              type: 'string',
+            },
+          ],
+        },
+      ],
+    }),
+    defineField({
+      name: 'gallery',
+      title: 'Galer\u00eda',
+      type: 'array',
+      of: [
+        {
+          type: 'image',
+          options: {hotspot: true},
+          fields: [
+            {
+              name: 'alt',
+              title: 'Texto alternativo',
+              type: 'string',
+            },
+          ],
+        },
+      ],
+    }),
+    defineField({
+      name: 'videos',
+      title: 'Videos',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            {name: 'title', title: 'T\u00edtulo', type: 'string'},
+            {name: 'url', title: 'URL', type: 'url'},
+          ],
+        },
+      ],
     }),
     defineField({
       name: 'link',
