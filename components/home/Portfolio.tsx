@@ -80,7 +80,7 @@ const Portfolio = async () => {
                 <div className="p-5 sm:p-6 flex flex-col gap-2">
                   <h3 className="text-xl sm:text-2xl font-bold">{item.title}</h3>
                   <p className="text-zinc-400 text-sm sm:text-base text-balance">{item.description}</p>
-                  <span className="mt-4 inline-flex items-center gap-2 text-xs uppercase tracking-wide font-semibold text-white px-4 py-2 rounded-full border border-white/20 bg-white/5 hover:border-white/40 transition">
+                  <span className="mt-4 inline-flex items-center justify-center text-xs uppercase font-semibold text-black bg-white px-4 py-2 rounded-full self-center transition">
                     Ver trabajo realizado
                   </span>
                 </div>
