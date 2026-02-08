@@ -64,7 +64,7 @@ export default async function ProjectDetailPage({ params }: { params: { slug: st
 
   return (
     <main className="min-h-screen bg-black text-white">
-      <section className="px-4 sm:px-6 md:px-12 pt-28 pb-16">
+      <section className="px-4 sm:px-6 md:px-12 pt-32 pb-16 sm:pt-36">
         <div className="max-w-5xl mx-auto space-y-10">
           <div className="space-y-4">
             <p className="text-xs uppercase tracking-[0.35em] text-zinc-500">Proyecto</p>

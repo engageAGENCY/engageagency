@@ -1,6 +1,6 @@
 const ContactPage = () => {
   return (
-    <div className="container mx-auto px-8 py-20">
+    <div className="container mx-auto px-8 pt-28 pb-20 sm:pt-36">
       <div className="text-center mb-12">
         <h1 className="text-5xl font-bold">Cont&aacute;ctanos</h1>
         <p className="text-lg text-gray-400 mt-4">Nos encantar&iacute;a saber de ti. As&iacute; es como puedes contactarnos.</p>
