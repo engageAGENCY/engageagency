@@ -24,7 +24,7 @@ export default function HeroClient({ hero }: HeroClientProps) {
   const liftLastLetter = titlePrimaryLast.toLowerCase() === "g";
 
   return (
-    <section className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden pt-20 pb-12 sm:pt-28 text-center">
+    <section className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden pt-28 pb-12 sm:pt-36 text-center">
       <div className="absolute inset-0 bg-grid-small z-0 opacity-40" />
       <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent via-background/80 to-background z-0" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[420px] h-[420px] md:w-[600px] md:h-[600px] bg-indigo-600/20 rounded-full blur-[120px] -z-10" />
