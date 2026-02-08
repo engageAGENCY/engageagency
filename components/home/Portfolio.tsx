@@ -60,8 +60,8 @@ const Portfolio = async () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
           {projects.map((item: any, index: number) => {
-            const card = (
-              <>
+            const cardContent = (
+              <div className="rounded-2xl bg-zinc-900 overflow-hidden flex flex-col shadow-lg shadow-black/20 transition-transform duration-200 group-hover:-translate-y-1">
                 {item.image && (item.image.src || item.image.asset) ? (
                   <div className="relative w-full aspect-[4/3]">
                     <Image
@@ -81,23 +81,19 @@ const Portfolio = async () => {
                   <h3 className="text-xl sm:text-2xl font-bold">{item.title}</h3>
                   <p className="text-zinc-400 text-sm sm:text-base text-balance">{item.description}</p>
                 </div>
-              </>
+              </div>
             );
 
+            const wrapperClass =
+              "group rounded-2xl p-[1px] bg-[linear-gradient(90deg,#ffffff,#60a5fa,#a855f7,#ec4899,#ffffff)] animate-gradient-wave";
+
             return item.slug ? (
-              <Link
-                key={index}
-                href={`/proyectos/${item.slug}`}
-                className="bg-zinc-900 rounded-2xl border border-white/10 overflow-hidden flex flex-col shadow-lg shadow-black/20 transition-transform duration-200 hover:-translate-y-1"
-              >
-                {card}
+              <Link key={index} href={`/proyectos/${item.slug}`} className={wrapperClass}>
+                {cardContent}
               </Link>
             ) : (
-              <div
-                key={index}
-                className="bg-zinc-900 rounded-2xl border border-white/10 overflow-hidden flex flex-col shadow-lg shadow-black/20"
-              >
-                {card}
+              <div key={index} className={wrapperClass}>
+                {cardContent}
               </div>
             );
           })}
