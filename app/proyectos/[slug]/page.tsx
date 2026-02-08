@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { PortableText } from "@portabletext/react";
-import type { ReactNode } from "react";
+import { PortableText, type PortableTextReactComponents } from "@portabletext/react";
 import imageUrlBuilder from "@sanity/image-url";
 import { client } from "@/lib/sanity.client";
 import { getProjectBySlug } from "@/lib/sanity.queries";
@@ -14,25 +13,25 @@ function urlFor(source: any) {
   return builder.image(source);
 }
 
-const portableTextComponents = {
+const portableTextComponents: PortableTextReactComponents = {
   block: {
-    h2: ({ children }: { children: ReactNode }) => (
-      <h2 className="text-xl sm:text-2xl font-semibold mt-8 mb-3">{children}</h2>
+    h2: (props) => (
+      <h2 className="text-xl sm:text-2xl font-semibold mt-8 mb-3">{props.children}</h2>
     ),
-    h3: ({ children }: { children: ReactNode }) => (
-      <h3 className="text-lg sm:text-xl font-semibold mt-6 mb-2">{children}</h3>
+    h3: (props) => (
+      <h3 className="text-lg sm:text-xl font-semibold mt-6 mb-2">{props.children}</h3>
     ),
-    normal: ({ children }: { children: ReactNode }) => (
-      <p className="text-zinc-300 leading-relaxed mb-4">{children}</p>
+    normal: (props) => (
+      <p className="text-zinc-300 leading-relaxed mb-4">{props.children}</p>
     ),
   },
   list: {
-    bullet: ({ children }: { children: ReactNode }) => (
-      <ul className="list-disc pl-5 space-y-2 text-zinc-300 mb-4">{children}</ul>
+    bullet: (props) => (
+      <ul className="list-disc pl-5 space-y-2 text-zinc-300 mb-4">{props.children}</ul>
     ),
   },
   listItem: {
-    bullet: ({ children }: { children: ReactNode }) => <li>{children}</li>,
+    bullet: (props) => <li>{props.children}</li>,
   },
 };
 
