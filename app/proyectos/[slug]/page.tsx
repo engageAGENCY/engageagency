@@ -13,7 +13,7 @@ function urlFor(source: any) {
   return builder.image(source);
 }
 
-const portableTextComponents: PortableTextReactComponents = {
+const portableTextComponents = {
   block: {
     h2: (props) => (
       <h2 className="text-xl sm:text-2xl font-semibold mt-8 mb-3">{props.children}</h2>
@@ -33,7 +33,7 @@ const portableTextComponents: PortableTextReactComponents = {
   listItem: {
     bullet: (props) => <li>{props.children}</li>,
   },
-};
+} satisfies Partial<PortableTextReactComponents>;
 
 function isVideoUrl(url: string) {
   return /youtube\.com|youtu\.be|vimeo\.com/.test(url);
