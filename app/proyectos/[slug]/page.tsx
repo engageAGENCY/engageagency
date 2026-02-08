@@ -74,7 +74,7 @@ export default async function ProjectDetailPage({ params }: { params: { slug: st
             )}
             <div className="flex flex-wrap gap-4 text-sm text-zinc-400">
               {project.client && <span>Cliente: {project.client}</span>}
-              {project.year && <span>A\u00f1o: {project.year}</span>}
+              {project.year && <span>A&ntilde;o: {project.year}</span>}
               {project.link && (
                 <a className="text-white hover:text-gray-200 underline" href={project.link} target="_blank" rel="noreferrer">
                   Ver sitio
@@ -127,7 +127,7 @@ export default async function ProjectDetailPage({ params }: { params: { slug: st
 
           {project.gallery?.length ? (
             <div className="space-y-4">
-              <h2 className="text-lg font-semibold">Galer\u00eda</h2>
+              <h2 className="text-lg font-semibold">Galer&iacute;a</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {project.gallery.map((image: any, index: number) => (
                   <div key={image._key || index} className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden border border-white/10">
