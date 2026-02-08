@@ -66,13 +66,19 @@ export default function HeroClient({ hero }: HeroClientProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="flex gap-3 sm:gap-4 justify-center"
+          className="flex flex-col items-center gap-3 sm:gap-4"
         >
           <Link
             href={hero.ctaHref}
             className="bg-white text-black h-12 sm:h-12 px-7 sm:px-8 rounded-full font-bold uppercase text-sm flex items-center gap-2 hover:bg-zinc-200 transition"
           >
             {hero.ctaLabel} <ArrowRight className="w-4 h-4" />
+          </Link>
+          <Link
+            href="/#servicios"
+            className="h-12 sm:h-12 px-7 sm:px-8 rounded-full font-bold uppercase text-sm flex items-center gap-2 border border-white/30 text-white hover:border-white hover:text-white transition"
+          >
+            Ver servicios <ArrowRight className="w-4 h-4" />
           </Link>
         </motion.div>
       </div>
