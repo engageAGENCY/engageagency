@@ -19,9 +19,6 @@ type HeroClientProps = {
 
 export default function HeroClient({ hero }: HeroClientProps) {
   const titlePrimary = hero.titlePrimary ?? "";
-  const titlePrimaryLast = titlePrimary.slice(-1);
-  const titlePrimaryHead = titlePrimary.slice(0, -1);
-  const liftLastLetter = titlePrimaryLast.toLowerCase() === "g";
 
   return (
     <section className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden pt-28 pb-12 sm:pt-36 text-center">
@@ -36,18 +33,12 @@ export default function HeroClient({ hero }: HeroClientProps) {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="leading-[0.98] mb-8 text-white"
         >
-          <span className="block font-logo text-[clamp(6.25rem,26vw,18.5rem)] md:text-[clamp(6.25rem,17.5vw,16.5rem)] lg:text-[clamp(6.25rem,12vw,14rem)] leading-[1.1] text-transparent bg-clip-text bg-[linear-gradient(90deg,#ffffff,#60a5fa,#a855f7,#ec4899,#ffffff)] animate-gradient-wave pb-6 sm:pb-8 md:pb-[0.2em] lg:pb-[0.18em]">
-            {liftLastLetter ? (
-              <>
-                {titlePrimaryHead}
-                <span className="inline-block relative -top-[0.12em]">
-                  {titlePrimaryLast}
-                </span>
-              </>
-            ) : (
-              titlePrimary
-            )}
-          </span>
+          <span className="sr-only">{titlePrimary}</span>
+          <img
+            src="/logo_engage_hero.svg"
+            alt={titlePrimary}
+            className="block mx-auto w-[clamp(320px,80vw,900px)] h-auto pb-4 sm:pb-6 md:pb-3 lg:pb-2"
+          />
           <span className="block font-geo font-normal text-[clamp(1.75rem,6vw,3.5rem)] leading-[0.9] tracking-tight text-white mt-4 sm:mt-6 lg:mt-5">
             {hero.titleHighlight}
           </span>
