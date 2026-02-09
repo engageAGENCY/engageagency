@@ -31,13 +31,16 @@ export default function HeroClient({ hero }: HeroClientProps) {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="leading-[0.98] mb-8 text-white"
+          className="leading-[0.98] mb-6 sm:mb-8 text-white"
         >
           <span className="sr-only">{titlePrimary}</span>
-          <img
-            src="/logo_engage_hero.svg"
-            alt={titlePrimary}
-            className="block mx-auto w-[clamp(320px,80vw,900px)] h-auto pb-4 sm:pb-6 md:pb-3 lg:pb-2"
+          <span
+            aria-hidden
+            className="mx-auto block w-[clamp(320px,80vw,900px)] aspect-[2.3/1] bg-[linear-gradient(90deg,#ffffff,#60a5fa,#a855f7,#ec4899,#ffffff)] animate-gradient-wave pb-2 sm:pb-3 md:pb-2"
+            style={{
+              WebkitMask: "url(/logo_engage_hero.svg) center / contain no-repeat",
+              mask: "url(/logo_engage_hero.svg) center / contain no-repeat",
+            }}
           />
           <span className="block font-geo font-normal text-[clamp(1.75rem,6vw,3.5rem)] leading-[0.9] tracking-tight text-white mt-4 sm:mt-6 lg:mt-5">
             {hero.titleHighlight}
