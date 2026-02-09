@@ -42,11 +42,10 @@ const Header = () => {
         <Link href="/" className="flex items-center gap-3">
           <div className="relative h-28 w-28 md:h-32 md:w-32 rounded-full overflow-hidden">
             <Image
-              src="/logo-engage-256.jpg"
+              src="/logo-engage.jpg"
               alt="Engage Agency"
               fill
-              sizes="(max-width: 768px) 96px, 128px"
-              quality={80}
+              sizes="128px"
               priority
             />
           </div>
