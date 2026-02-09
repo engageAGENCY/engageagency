@@ -72,7 +72,7 @@ const renderStars = (rating: number) => {
       className={index < stars ? "text-yellow-400" : "text-gray-600"}
       aria-hidden
     >
-      \u2605
+      {"\u2605"}
     </span>
   ));
 };
@@ -120,7 +120,7 @@ const Testimonials = async () => {
       <div className="max-w-6xl mx-auto text-center">
         <div className="mb-12 space-y-2">
           <p className="text-xs uppercase tracking-[0.3em] text-gray-500">
-            Rese\u00f1as
+            {"Rese\u00f1as"}
           </p>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-wide">
             {googleData ? "Excelente" : "Lo que dicen nuestros clientes"}
@@ -175,7 +175,7 @@ const Testimonials = async () => {
                 {review.text}
               </p>
               <button className="text-xs uppercase tracking-wide text-gray-400 hover:text-white transition">
-                Leer m\u00e1s
+                {"Leer m\u00e1s"}
               </button>
             </div>
           ))}
