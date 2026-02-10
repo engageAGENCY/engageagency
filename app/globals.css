@@ -238,29 +238,9 @@ html { scroll-behavior: smooth; }
     --gooey-scale: 0.55;
   }
 
-  .liquid-gooey-base {
-    background:
-      radial-gradient(900px 700px at 20% 10%, rgba(128, 0, 255, 0.08), transparent 62%),
-      radial-gradient(700px 600px at 80% 0%, rgba(255, 0, 128, 0.06), transparent 62%),
-      #060015;
-  }
-
   .liquid-gooey-blobs {
     filter: url(#gooey-sm);
     -webkit-filter: url(#gooey-sm);
-    opacity: 0.45;
-  }
-
-  .liquid-gooey-blob {
-    opacity: 0.5;
-    mix-blend-mode: normal;
-    background: radial-gradient(
-      circle at 30% 30%,
-      rgba(255, 0, 128, 0.65) 0%,
-      rgba(255, 0, 128, 0.42) 38%,
-      rgba(128, 0, 255, 0.32) 62%,
-      rgba(10, 0, 45, 0) 72%
-    );
   }
 
   .liquid-gooey-blob--mobile-hidden {
@@ -268,7 +248,7 @@ html { scroll-behavior: smooth; }
   }
 
   .liquid-gooey-grain {
-    opacity: 0.045;
+    opacity: 0.05;
   }
 }
 

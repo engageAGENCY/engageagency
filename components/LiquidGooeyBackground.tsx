@@ -42,7 +42,6 @@ const blobs = [
     animation: "gooey-float-1",
     duration: "16s",
     delay: "-12s",
-    mobileHidden: true,
   },
   {
     id: 5,
