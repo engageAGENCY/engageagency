@@ -126,6 +126,7 @@ html { scroll-behavior: smooth; }
   pointer-events: none;
   overflow: hidden;
   isolation: isolate;
+  --gooey-scale: 1;
 }
 
 .liquid-gooey-base {
@@ -142,6 +143,7 @@ html { scroll-behavior: smooth; }
   inset: 0;
   filter: url(#gooey);
   -webkit-filter: url(#gooey);
+  opacity: 0.95;
 }
 
 .liquid-gooey-blob {
@@ -232,13 +234,26 @@ html { scroll-behavior: smooth; }
 }
 
 @media (max-width: 640px) {
+  .liquid-gooey-bg {
+    --gooey-scale: 0.68;
+  }
+
+  .liquid-gooey-base {
+    background:
+      radial-gradient(900px 700px at 20% 10%, rgba(128, 0, 255, 0.12), transparent 60%),
+      radial-gradient(700px 600px at 80% 0%, rgba(255, 0, 128, 0.1), transparent 60%),
+      #090024;
+  }
+
   .liquid-gooey-blobs {
     filter: url(#gooey-sm);
     -webkit-filter: url(#gooey-sm);
+    opacity: 0.6;
   }
 
   .liquid-gooey-blob {
-    opacity: 0.72;
+    opacity: 0.62;
+    mix-blend-mode: normal;
   }
 
   .liquid-gooey-blob--mobile-hidden {
@@ -246,7 +261,7 @@ html { scroll-behavior: smooth; }
   }
 
   .liquid-gooey-grain {
-    opacity: 0.06;
+    opacity: 0.05;
   }
 }
 

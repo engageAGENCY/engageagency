@@ -86,7 +86,7 @@ export default function LiquidGooeyBackground({ className = "" }: LiquidGooeyBac
             <feBlend in="SourceGraphic" in2="goo" />
           </filter>
           <filter id="gooey-sm">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="20" result="blur" />
+            <feGaussianBlur in="SourceGraphic" stdDeviation="18" result="blur" />
             <feColorMatrix
               in="blur"
               mode="matrix"
@@ -106,8 +106,8 @@ export default function LiquidGooeyBackground({ className = "" }: LiquidGooeyBac
             key={blob.id}
             className={`liquid-gooey-blob${blob.mobileHidden ? " liquid-gooey-blob--mobile-hidden" : ""}`}
             style={{
-              width: blob.size,
-              height: blob.size,
+              width: `calc(${blob.size}px * var(--gooey-scale, 1))`,
+              height: `calc(${blob.size}px * var(--gooey-scale, 1))`,
               top: blob.top,
               left: blob.left,
               opacity: blob.opacity,
