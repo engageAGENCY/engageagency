@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { PortableText, type PortableTextReactComponents } from "@portabletext/react";
 import imageUrlBuilder from "@sanity/image-url";
 import { client } from "@/lib/sanity.client";
-import { getProjectBySlug } from "@/lib/sanity.queries";
+import { getProjectBySlug, getProjectSlugs } from "@/lib/sanity.queries";
 
 export const revalidate = 60;
 
@@ -53,6 +53,17 @@ function getEmbedUrl(url: string) {
     return id ? `https://player.vimeo.com/video/${id}` : url;
   }
   return url;
+}
+
+export async function generateStaticParams() {
+  const slugs = await getProjectSlugs();
+  if (!Array.isArray(slugs)) {
+    return [];
+  }
+
+  return slugs
+    .filter((slug): slug is string => typeof slug === "string" && slug.length > 0)
+    .map((slug) => ({ slug }));
 }
 
 export default async function ProjectDetailPage({ params }: { params: { slug: string } }) {

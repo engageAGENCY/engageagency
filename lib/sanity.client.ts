@@ -1,12 +1,17 @@
-import { createClient } from 'next-sanity'
+import { createClient } from "next-sanity";
 
-const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID === 'pon_tu_id_aqui' || !process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
-  ? '' // Proporciona una cadena vacía como projectId de respaldo
-  : process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
+const configuredProjectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID?.trim();
+const configuredDataset = process.env.NEXT_PUBLIC_SANITY_DATASET?.trim();
+
+export const isSanityConfigured = Boolean(
+  configuredProjectId &&
+    configuredDataset &&
+    configuredProjectId !== "pon_tu_id_aqui",
+);
 
 export const client = createClient({
-  projectId: projectId,
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
-  apiVersion: '2024-01-01',
-  useCdn: false,
-})
+  projectId: isSanityConfigured ? configuredProjectId : "missing-project-id",
+  dataset: configuredDataset || "production",
+  apiVersion: "2024-01-01",
+  useCdn: process.env.NODE_ENV === "production",
+});

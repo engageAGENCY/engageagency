@@ -17,7 +17,7 @@ const Team = async () => {
   try {
     teamMembers = await getTeamMembers();
   } catch (error) {
-    console.error("Fallo al obtener los miembros del equipo de Sanity, usando datos harcodeados:", error);
+    console.error("Fallo al obtener los miembros del equipo de Sanity, usando datos hardcodeados:", error);
     teamMembers = hardcodedTeamMembers;
   }
 
@@ -28,7 +28,7 @@ const Team = async () => {
       <div className="max-w-6xl mx-auto text-center">
         <div className="mb-12 space-y-2">
           <h2 className="text-3xl sm:text-4xl font-bold">Nuestro Equipo</h2>
-          <p className="text-gray-400 text-sm sm:text-base text-balance">Talento multidisciplinario para acompañarte en cada etapa.</p>
+          <p className="text-gray-400 text-sm sm:text-base text-balance">Talento multidisciplinario para acompa&ntilde;arte en cada etapa.</p>
         </div>
         {hasMembers ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8">
@@ -56,8 +56,8 @@ const Team = async () => {
           </div>
         ) : (
           <div className="bg-gray-900/60 border border-white/10 rounded-2xl p-8 sm:p-10 text-center max-w-3xl mx-auto">
-            <p className="text-lg font-semibold text-white">Aún no hay miembros publicados.</p>
-            <p className="text-gray-400 text-sm sm:text-base mt-2">Agrega tu equipo en Sanity para que aparezca aquí automáticamente.</p>
+            <p className="text-lg font-semibold text-white">A&uacute;n no hay miembros publicados.</p>
+            <p className="text-gray-400 text-sm sm:text-base mt-2">Agrega tu equipo en Sanity para que aparezca aqu&iacute; autom&aacute;ticamente.</p>
           </div>
         )}
       </div>

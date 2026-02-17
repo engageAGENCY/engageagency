@@ -152,6 +152,9 @@ const Testimonials = async () => {
                         src={review.avatar}
                         alt={review.author}
                         className="h-10 w-10 rounded-full object-cover"
+                        loading="lazy"
+                        decoding="async"
+                        referrerPolicy="no-referrer"
                       />
                     ) : (
                       review.author.slice(0, 1)

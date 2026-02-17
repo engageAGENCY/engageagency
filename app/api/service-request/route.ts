@@ -21,10 +21,70 @@ type ServiceRequestPayload = {
   budget?: string;
   budgetOther?: string;
   source?: string;
+  website?: string;
 };
 
 const asString = (value: unknown) => (typeof value === "string" ? value.trim() : "");
 const asStringArray = (value: unknown) => (Array.isArray(value) ? value.map(asString).filter(Boolean) : []);
+
+const RATE_LIMIT_WINDOW_MS = 60_000;
+const RATE_LIMIT_MAX_REQUESTS = 8;
+const rateLimitStore = new Map<string, { count: number; resetAt: number }>();
+
+const textFieldMaxLength = {
+  selectedService: 120,
+  companyName: 120,
+  companyRnc: 40,
+  contactEmail: 160,
+  contactPhone: 40,
+  socialHandle: 120,
+  brandDescription: 1500,
+  servicesOffered: 1200,
+  otherInterest: 120,
+  currentProblem: 1500,
+  socialPlan: 120,
+  socialPlanOther: 120,
+  budget: 64,
+  budgetOther: 64,
+  source: 120,
+} as const;
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const getClientIp = (request: Request) => {
+  const forwardedFor = request.headers.get("x-forwarded-for");
+  if (forwardedFor) {
+    return forwardedFor.split(",")[0].trim();
+  }
+  return (
+    request.headers.get("cf-connecting-ip")?.trim() ||
+    request.headers.get("x-real-ip")?.trim() ||
+    "unknown"
+  );
+};
+
+const isRateLimited = (ip: string) => {
+  const now = Date.now();
+  const current = rateLimitStore.get(ip);
+
+  if (!current || current.resetAt <= now) {
+    rateLimitStore.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return false;
+  }
+
+  current.count += 1;
+  rateLimitStore.set(ip, current);
+
+  if (rateLimitStore.size > 1000) {
+    rateLimitStore.forEach((value, key) => {
+      if (value.resetAt <= now) {
+        rateLimitStore.delete(key);
+      }
+    });
+  }
+
+  return current.count > RATE_LIMIT_MAX_REQUESTS;
+};
 
 const escapeHtml = (value: string) =>
   value
@@ -36,7 +96,18 @@ const escapeHtml = (value: string) =>
 
 export async function POST(request: Request) {
   try {
+    const clientIp = getClientIp(request);
+    if (isRateLimited(clientIp)) {
+      return NextResponse.json({ ok: false, error: "rate_limited" }, { status: 429 });
+    }
+
     const payload = (await request.json()) as ServiceRequestPayload;
+    const honeypot = asString(payload.website);
+    if (honeypot) {
+      // Silent success for bots.
+      return NextResponse.json({ ok: true });
+    }
+
     const data = {
       selectedService: asString(payload.selectedService),
       companyName: asString(payload.companyName),
@@ -57,6 +128,21 @@ export async function POST(request: Request) {
       source: asString(payload.source),
     };
 
+    const invalidLengthField = (Object.entries(textFieldMaxLength) as Array<
+      [keyof typeof textFieldMaxLength, number]
+    >).find(([field, maxLength]) => data[field].length > maxLength);
+
+    if (invalidLengthField) {
+      return NextResponse.json(
+        { ok: false, error: "field_too_long", field: invalidLengthField[0] },
+        { status: 400 },
+      );
+    }
+
+    if (data.interests.length > 12 || data.interests.some((item) => item.length > 100)) {
+      return NextResponse.json({ ok: false, error: "invalid_interests" }, { status: 400 });
+    }
+
     const requiredFields = [
       "companyName",
       "companyRnc",
@@ -71,6 +157,10 @@ export async function POST(request: Request) {
 
     if (missingFields.length > 0) {
       return NextResponse.json({ ok: false, error: "missing_fields", fields: missingFields }, { status: 400 });
+    }
+
+    if (!EMAIL_REGEX.test(data.contactEmail)) {
+      return NextResponse.json({ ok: false, error: "invalid_email" }, { status: 400 });
     }
 
     if (!data.interests.length && !data.otherInterest) {
@@ -130,15 +220,15 @@ export async function POST(request: Request) {
     pushLine("Empresa", data.companyName);
     pushLine("RNC", data.companyRnc);
     pushLine("Email", data.contactEmail);
-    pushLine("Tel\u00e9fono", data.contactPhone);
+    pushLine("Telefono", data.contactPhone);
     pushLine("Usuario Social", data.socialHandle);
-    pushLine("Descripci\u00f3n de Marca", data.brandDescription);
+    pushLine("Descripcion de Marca", data.brandDescription);
     pushLine("Servicios Ofrecidos", data.servicesOffered);
-    pushLine("Servicios de Inter\u00e9s", interestSummary);
+    pushLine("Servicios de Interes", interestSummary);
     pushLine("Problema Actual", data.currentProblem);
     pushLine("Plan Redes Sociales", data.needsSocialPlan ? socialPlanSummary : "-");
     pushLine("Presupuesto", budgetSummary);
-    pushLine("C\u00f3mo se Enter\u00f3", data.source);
+    pushLine("Como se Entero", data.source);
 
     const html = `
       <div style="font-family: Arial, sans-serif; color: #111;">
