@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Sparkles } from "lucide-react";
 
 export type Service = {
@@ -35,6 +35,15 @@ const serviceVideoByNumber: Record<string, string> = {
   "04": "/videos/service-04.mp4",
   "05": "/videos/service-05.mp4",
   "06": "/videos/service-06.mp4",
+};
+
+const servicePosterByNumber: Record<string, string> = {
+  "01": "/optimized/eng-agency2-1200.webp",
+  "02": "/optimized/eng-agency-1200.webp",
+  "03": "/optimized/nn-1200.webp",
+  "04": "/optimized/ss-1200.webp",
+  "05": "/optimized/smartphone5-1200.webp",
+  "06": "/optimized/masking-duct-tape-1200.webp",
 };
 
 function normalizeServiceNumber(value?: string) {
@@ -80,6 +89,57 @@ function getEmbedUrl(url?: string) {
   return url;
 }
 
+type VideoPreviewProps = {
+  src: string;
+  poster?: string;
+  title: string;
+};
+
+function VideoPreview({ src, poster, title }: VideoPreviewProps) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [started, setStarted] = useState(false);
+
+  const startPlayback = async () => {
+    const node = videoRef.current;
+    setStarted(true);
+    if (!node) return;
+    try {
+      await node.play();
+    } catch {
+      // If play is blocked, controls remain visible for manual start.
+    }
+  };
+
+  return (
+    <div className="relative h-full w-full">
+      <video
+        ref={videoRef}
+        className="h-full w-full object-cover"
+        controls={started}
+        playsInline
+        preload="none"
+        poster={poster}
+      >
+        <source src={src} />
+      </video>
+      {!started ? (
+        <button
+          type="button"
+          onClick={startPlayback}
+          aria-label={`Reproducir video de ${title}`}
+          className="absolute inset-0 flex items-center justify-center bg-black/25 transition hover:bg-black/40"
+        >
+          <span className="flex h-16 w-16 items-center justify-center rounded-full border border-white/35 bg-black/55 text-white shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+            <svg viewBox="0 0 24 24" className="h-8 w-8 translate-x-[1px]" fill="currentColor" aria-hidden="true">
+              <path d="M8 5.5v13l10-6.5z" />
+            </svg>
+          </span>
+        </button>
+      ) : null}
+    </div>
+  );
+}
+
 const ServiceRequestModal = dynamic(() => import("./ServiceRequestModal"), { ssr: false });
 
 const ServicesClient = ({ services }: ServicesClientProps) => {
@@ -111,6 +171,11 @@ const ServicesClient = ({ services }: ServicesClientProps) => {
               const mappedVideoUrl = serviceVideoByNumber[serviceNumber];
               const primaryReel = Array.isArray(service.reels) ? service.reels.find((reel) => reel?.url) : undefined;
               const videoUrl = mappedVideoUrl || primaryReel?.url;
+              const videoPoster =
+                primaryReel?.posterUrl ||
+                primaryReel?.poster?.asset?.url ||
+                servicePosterByNumber[serviceNumber] ||
+                "/optimized/content-engage-1600.webp";
               const reversed = index % 2 === 1;
 
               return (
@@ -124,15 +189,11 @@ const ServicesClient = ({ services }: ServicesClientProps) => {
                         {videoUrl ? (
                           <div className="relative w-full aspect-[9/16]">
                             {isDirectVideo(videoUrl) ? (
-                              <video
-                                className="h-full w-full object-cover"
-                                controls
-                                playsInline
-                                preload="metadata"
-                                poster={primaryReel?.posterUrl || primaryReel?.poster?.asset?.url}
-                              >
-                                <source src={videoUrl} />
-                              </video>
+                              <VideoPreview
+                                src={videoUrl}
+                                poster={videoPoster}
+                                title={service.title || "servicio"}
+                              />
                             ) : isYouTube(videoUrl) || isVimeo(videoUrl) ? (
                               <iframe
                                 src={getEmbedUrl(videoUrl)}
