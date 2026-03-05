@@ -1,8 +1,8 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import { useRef, useState } from "react";
-import { Sparkles } from "lucide-react";
 
 export type Service = {
   number?: string;
@@ -270,17 +270,26 @@ const ServicesClient = ({ services }: ServicesClientProps) => {
           </div>
 
           <article className="rounded-2xl overflow-hidden border border-white/10 bg-black/50">
-            <div className="relative h-36 overflow-hidden bg-[radial-gradient(circle_at_20%_25%,rgba(236,72,153,0.35),transparent_58%),radial-gradient(circle_at_84%_20%,rgba(96,165,250,0.35),transparent_48%),linear-gradient(130deg,rgba(2,6,23,0.96),rgba(30,27,75,0.92),rgba(60,7,83,0.9))]">
-              <div className="absolute -left-10 top-5 h-24 w-24 rounded-full bg-fuchsia-500/30 blur-2xl" />
-              <div className="absolute right-1 top-2 h-20 w-20 rounded-full bg-blue-400/30 blur-2xl" />
-              <div className="absolute inset-x-0 top-4 flex justify-center">
-                <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl border border-white/25 bg-black/35 backdrop-blur">
-                  <Sparkles className="h-6 w-6 text-white" strokeWidth={2.2} aria-hidden />
+            <div className="relative overflow-hidden border-b border-white/10 bg-[radial-gradient(circle_at_20%_25%,rgba(236,72,153,0.35),transparent_58%),radial-gradient(circle_at_84%_20%,rgba(96,165,250,0.35),transparent_48%),linear-gradient(130deg,rgba(2,6,23,0.96),rgba(30,27,75,0.92),rgba(60,7,83,0.9))]">
+              <div className="absolute -left-10 top-8 h-24 w-24 rounded-full bg-fuchsia-500/30 blur-2xl" />
+              <div className="absolute right-1 top-3 h-20 w-20 rounded-full bg-blue-400/30 blur-2xl" />
+              <div className="relative mx-auto flex h-[23rem] w-full max-w-sm items-center justify-center px-5 py-6 sm:h-[28rem] sm:max-w-md sm:px-6 sm:py-8">
+                <div className="relative w-[14.2rem] sm:w-[17.5rem] aspect-[1076/1628]">
+                  <div
+                    className="absolute left-[8.8%] right-[8.8%] top-[5.7%] bottom-[5.6%] overflow-hidden rounded-[2.1rem] bg-black/70"
+                    aria-label="Espacio para carrusel dentro del celular"
+                    data-carousel-slot="plan-personalizado"
+                  >
+                    <div className="h-full w-full bg-[radial-gradient(circle_at_30%_20%,rgba(236,72,153,0.45),transparent_45%),radial-gradient(circle_at_70%_72%,rgba(96,165,250,0.45),transparent_52%),linear-gradient(160deg,rgba(10,14,30,0.96),rgba(22,28,52,0.98))]" />
+                  </div>
+                  <Image
+                    src="/celular.png"
+                    alt="Marco de celular para carrusel del plan personalizado"
+                    fill
+                    className="pointer-events-none select-none object-contain"
+                    sizes="(max-width: 640px) 220px, (max-width: 1024px) 280px, 320px"
+                  />
                 </div>
-              </div>
-              <div className="absolute inset-x-0 bottom-0 p-4 text-center">
-                <p className="text-[11px] uppercase tracking-[0.22em] text-blue-200/90 mb-1">Hecho a medida</p>
-                <h5 className="text-lg font-bold text-white">Plan personalizado</h5>
               </div>
             </div>
 
