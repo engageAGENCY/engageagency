@@ -38,12 +38,12 @@ const serviceVideoByNumber: Record<string, string> = {
 };
 
 const servicePosterByNumber: Record<string, string> = {
-  "01": "/optimized/eng-agency2-1200.webp",
-  "02": "/optimized/eng-agency-1200.webp",
-  "03": "/optimized/nn-1200.webp",
-  "04": "/optimized/ss-1200.webp",
-  "05": "/optimized/smartphone5-1200.webp",
-  "06": "/optimized/masking-duct-tape-1200.webp",
+  "01": "/videos/posters/service-01.jpg",
+  "02": "/videos/posters/service-02.jpg",
+  "03": "/videos/posters/service-03.jpg",
+  "04": "/videos/posters/service-04.jpg",
+  "05": "/videos/posters/service-05.jpg",
+  "06": "/videos/posters/service-06.jpg",
 };
 
 function normalizeServiceNumber(value?: string) {
@@ -169,13 +169,12 @@ const ServicesClient = ({ services }: ServicesClientProps) => {
             {services.map((service, index) => {
               const serviceNumber = normalizeServiceNumber(service.number);
               const mappedVideoUrl = serviceVideoByNumber[serviceNumber];
+              const mappedPosterUrl = servicePosterByNumber[serviceNumber];
               const primaryReel = Array.isArray(service.reels) ? service.reels.find((reel) => reel?.url) : undefined;
               const videoUrl = mappedVideoUrl || primaryReel?.url;
-              const videoPoster =
-                primaryReel?.posterUrl ||
-                primaryReel?.poster?.asset?.url ||
-                servicePosterByNumber[serviceNumber] ||
-                "/optimized/content-engage-1600.webp";
+              const videoPoster = mappedVideoUrl
+                ? mappedPosterUrl || primaryReel?.posterUrl || primaryReel?.poster?.asset?.url || "/optimized/content-engage-1600.webp"
+                : primaryReel?.posterUrl || primaryReel?.poster?.asset?.url || mappedPosterUrl || "/optimized/content-engage-1600.webp";
               const reversed = index % 2 === 1;
 
               return (
