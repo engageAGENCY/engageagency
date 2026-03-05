@@ -220,15 +220,15 @@ export async function POST(request: Request) {
     pushLine("Empresa", data.companyName);
     pushLine("RNC", data.companyRnc);
     pushLine("Email", data.contactEmail);
-    pushLine("Telefono", data.contactPhone);
+    pushLine("Teléfono", data.contactPhone);
     pushLine("Usuario Social", data.socialHandle);
-    pushLine("Descripcion de Marca", data.brandDescription);
+    pushLine("Descripción de Marca", data.brandDescription);
     pushLine("Servicios Ofrecidos", data.servicesOffered);
-    pushLine("Servicios de Interes", interestSummary);
+    pushLine("Servicios de Interés", interestSummary);
     pushLine("Problema Actual", data.currentProblem);
     pushLine("Plan Redes Sociales", data.needsSocialPlan ? socialPlanSummary : "-");
     pushLine("Presupuesto", budgetSummary);
-    pushLine("Como se Entero", data.source);
+    pushLine("Cómo se enteró", data.source);
 
     const html = `
       <div style="font-family: Arial, sans-serif; color: #111;">

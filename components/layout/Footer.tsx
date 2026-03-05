@@ -49,8 +49,8 @@ const Footer = () => {
           </p>
           <p className="text-gray-200/80">
             Correo:{" "}
-            <a href="mailto:lauradco@icloud.com" className="text-white/90 hover:text-white">
-              lauradco@icloud.com
+            <a href="mailto:engagencyrd@gmail.com" className="text-white/90 hover:text-white">
+              engageagencyrd@gmail.com
             </a>
           </p>
           <p className="text-gray-200/80">

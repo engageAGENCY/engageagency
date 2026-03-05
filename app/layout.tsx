@@ -25,11 +25,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://engagencydo.com"),
   title: "Engage Agency",
   description:
-    "Somos un grupo creativo comprometidos de llevar tu marca al pr\u00f3ximo nivel en el mundo digital.",
+    "Somos una agencia creativa enfocada en estrategia, contenido y resultados para marcas en crecimiento.",
   openGraph: {
     title: "Engage Agency",
     description:
-      "Somos un grupo creativo comprometidos de llevar tu marca al pr\u00f3ximo nivel en el mundo digital.",
+      "Somos una agencia creativa enfocada en estrategia, contenido y resultados para marcas en crecimiento.",
     type: "website",
     siteName: "Engage Agency",
     images: [
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Engage Agency",
     description:
-      "Somos un grupo creativo comprometidos de llevar tu marca al pr\u00f3ximo nivel en el mundo digital.",
+      "Somos una agencia creativa enfocada en estrategia, contenido y resultados para marcas en crecimiento.",
     images: ["/logo-engage.jpg"],
   },
 };

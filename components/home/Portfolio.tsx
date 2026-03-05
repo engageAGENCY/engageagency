@@ -10,40 +10,17 @@ function urlFor(source: any) {
   return builder.image(source);
 }
 
-const hardcodedPortfolioItems = [
-  {
-    title: "Proyecto Alfa",
-    description:
-      "Una soluci\u00f3n de comercio electr\u00f3nico completa con un dise\u00f1o personalizado y optimizaci\u00f3n para motores de b\u00fasqueda.",
-    image: "/placeholder-image.png",
-  },
-  {
-    title: "Proyecto Beta",
-    description:
-      "Desarrollo de una aplicaci\u00f3n web interactiva para la gesti\u00f3n de eventos y la venta de entradas.",
-    image: "/placeholder-image.png",
-  },
-  {
-    title: "Proyecto Gamma",
-    description:
-      "Creaci\u00f3n de una identidad de marca moderna y un sitio web corporativo para una startup tecnol\u00f3gica.",
-    image: "/placeholder-image.png",
-  },
-  {
-    title: "Proyecto Delta",
-    description:
-      "Dise\u00f1o y desarrollo de una plataforma de aprendizaje en l\u00ednea con contenido de video y seguimiento del progreso.",
-    image: "/placeholder-image.png",
-  },
-];
-
 const Portfolio = async () => {
   let projects = [];
   try {
     projects = await getProjects();
   } catch (error) {
-    console.error("Fallo al obtener los proyectos de Sanity, usando datos harcodeados:", error);
-    projects = hardcodedPortfolioItems;
+    console.error("Fallo al obtener los proyectos de Sanity:", error);
+    projects = [];
+  }
+
+  if (!Array.isArray(projects) || projects.length === 0) {
+    return null;
   }
 
   return (
@@ -51,9 +28,9 @@ const Portfolio = async () => {
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-10 sm:mb-12">
           <div>
-            <h2 className="text-3xl sm:text-4xl font-display uppercase">Portafolio de Trabajo</h2>
+            <h2 className="text-3xl sm:text-4xl font-display uppercase">Casos de estudio</h2>
             <p className="text-zinc-400 text-sm sm:text-base mt-2 text-balance">
-              Trabajo real, resultados medibles y marcas con car&aacute;cter.
+              Proyectos documentados con contexto, estrategia aplicada y resultado.
             </p>
           </div>
           <span className="text-xs uppercase tracking-[0.3em] text-zinc-500">Proyectos destacados</span>

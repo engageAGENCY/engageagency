@@ -2,17 +2,83 @@
 
 import dynamic from "next/dynamic";
 import { useState } from "react";
+import { Sparkles } from "lucide-react";
 
 export type Service = {
   number?: string;
   title?: string;
   description?: string;
   items?: string[];
+  reels?: {
+    _key?: string;
+    title?: string;
+    url?: string;
+    posterUrl?: string;
+    poster?: {
+      asset?: {
+        url?: string;
+      };
+    };
+  }[];
+  prefillPlan?: string;
+  serviceKind?: "service" | "plan";
 };
 
 type ServicesClientProps = {
   services: Service[];
 };
+
+const serviceVideoByNumber: Record<string, string> = {
+  "01": "/videos/service-01.mp4",
+  "02": "/videos/service-02.mp4",
+  "03": "/videos/service-03.mp4",
+  "04": "/videos/service-04.mp4",
+  "05": "/videos/service-05.mp4",
+  "06": "/videos/service-06.mp4",
+};
+
+function normalizeServiceNumber(value?: string) {
+  if (!value) return "";
+  const digits = value.replace(/\D/g, "");
+  if (!digits) return "";
+  return digits.padStart(2, "0").slice(-2);
+}
+
+function isDirectVideo(url?: string) {
+  if (!url) return false;
+  return /\.(mp4|webm|ogg)(\?.*)?$/i.test(url);
+}
+
+function isYouTube(url?: string) {
+  if (!url) return false;
+  return /youtube\.com|youtu\.be/i.test(url);
+}
+
+function isVimeo(url?: string) {
+  if (!url) return false;
+  return /vimeo\.com/i.test(url);
+}
+
+function getEmbedUrl(url?: string) {
+  if (!url) return "";
+  if (url.includes("youtu.be/")) {
+    const id = url.split("youtu.be/")[1]?.split("?")[0];
+    return id ? `https://www.youtube.com/embed/${id}` : url;
+  }
+  if (url.includes("youtube.com")) {
+    try {
+      const id = new URL(url).searchParams.get("v");
+      return id ? `https://www.youtube.com/embed/${id}` : url;
+    } catch {
+      return url;
+    }
+  }
+  if (url.includes("vimeo.com")) {
+    const id = url.split("vimeo.com/")[1]?.split("?")[0];
+    return id ? `https://player.vimeo.com/video/${id}` : url;
+  }
+  return url;
+}
 
 const ServiceRequestModal = dynamic(() => import("./ServiceRequestModal"), { ssr: false });
 
@@ -30,57 +96,174 @@ const ServicesClient = ({ services }: ServicesClientProps) => {
   };
 
   return (
-    <section id="servicios" className="py-16 sm:py-20 px-4 sm:px-6 md:px-10">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-12 space-y-3">
-          <h2 className="text-xs sm:text-sm uppercase text-gray-400 tracking-[0.3em]">Lo que ofrecemos</h2>
-          <h3 className="text-3xl sm:text-4xl font-bold">Nuestros servicios</h3>
-          <p className="text-sm sm:text-base text-white/60 max-w-2xl mx-auto text-balance">
-            Selecciona un servicio y completa el formulario para que podamos enviarte una propuesta personalizada por correo electr&oacute;nico.
-          </p>
+    <section id="servicios" className="py-16 sm:py-20 px-4 sm:px-6 md:px-10 border-t border-white/10">
+      <div className="max-w-6xl mx-auto space-y-12 sm:space-y-14">
+
+        <div className="space-y-6">
+          <div className="text-center">
+            <p className="text-xs uppercase tracking-[0.28em] text-white/55">Matriz de servicios</p>
+            <h4 className="text-2xl sm:text-3xl font-bold mt-2">Soluciones clave para tu marca</h4>
+          </div>
+
+          <div className="space-y-8 sm:space-y-10">
+            {services.map((service, index) => {
+              const serviceNumber = normalizeServiceNumber(service.number);
+              const mappedVideoUrl = serviceVideoByNumber[serviceNumber];
+              const primaryReel = Array.isArray(service.reels) ? service.reels.find((reel) => reel?.url) : undefined;
+              const videoUrl = mappedVideoUrl || primaryReel?.url;
+              const reversed = index % 2 === 1;
+
+              return (
+                <article
+                  key={service.number ?? service.title ?? `service-${index}`}
+                  className="rounded-2xl p-[1px] bg-[linear-gradient(90deg,#ffffff,#60a5fa,#a855f7,#ec4899,#ffffff)] animate-gradient-wave"
+                >
+                  <div className="rounded-2xl overflow-hidden bg-gray-800/55">
+                    <div className={`flex flex-col md:flex-row ${reversed ? "md:flex-row-reverse" : ""}`}>
+                      <div className="relative bg-black/60 md:w-[43%] lg:w-[40%] xl:w-[38%] md:flex-none">
+                        {videoUrl ? (
+                          <div className="relative w-full aspect-[9/16]">
+                            {isDirectVideo(videoUrl) ? (
+                              <video
+                                className="h-full w-full object-cover"
+                                controls
+                                playsInline
+                                preload="metadata"
+                                poster={primaryReel?.posterUrl || primaryReel?.poster?.asset?.url}
+                              >
+                                <source src={videoUrl} />
+                              </video>
+                            ) : isYouTube(videoUrl) || isVimeo(videoUrl) ? (
+                              <iframe
+                                src={getEmbedUrl(videoUrl)}
+                                title={primaryReel?.title || `${service.title || "Servicio"} - Reel`}
+                                className="h-full w-full"
+                                loading="lazy"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                              />
+                            ) : (
+                              <a
+                                href={videoUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="h-full w-full flex items-center justify-center p-3 text-center text-sm text-white/80 hover:text-white transition"
+                              >
+                                Ver reel
+                              </a>
+                            )}
+                          </div>
+                        ) : (
+                          <div className="aspect-[9/16] w-full flex items-center justify-center text-sm text-white/70">
+                            Reel pendiente
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="p-6 sm:p-8 lg:p-10 flex flex-col md:w-[57%] lg:w-[60%] xl:w-[62%]">
+                        <div className="text-4xl sm:text-5xl font-bold text-blue-300">{service.number}</div>
+                        <div className="space-y-2 mt-4">
+                          <h5 className="text-2xl sm:text-3xl font-bold leading-tight text-white">{service.title}</h5>
+                          <p className="text-white/80 text-base sm:text-lg text-balance">{service.description}</p>
+                        </div>
+                        <ul className="space-y-2 text-sm sm:text-base text-white/90 mt-5">
+                          {(Array.isArray(service.items) ? service.items : []).map((item: string, itemIndex: number) => (
+                            <li key={itemIndex} className="flex items-start gap-2">
+                              <svg
+                                className="w-4 h-4 mt-1 flex-none text-blue-300"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                              </svg>
+                              <span className="leading-snug">{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                        <div className="pt-6 mt-auto">
+                          <button
+                            type="button"
+                            onClick={() => openForm({ ...service, serviceKind: "service" })}
+                            className="w-full rounded-full bg-white text-black text-xs sm:text-sm font-semibold uppercase tracking-wide py-3 hover:bg-zinc-200 transition"
+                          >
+                            Solicitar este servicio
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 md:gap-8">
-          {services.map((service: Service, index: number) => {
-            const items = Array.isArray(service.items) ? service.items : [];
-            const serviceKey = service.number ?? service.title ?? `service-${index}`;
-            return (
-              <div
-                key={serviceKey}
-                className="rounded-2xl p-[1px] bg-[linear-gradient(90deg,#ffffff,#60a5fa,#a855f7,#ec4899,#ffffff)] animate-gradient-wave"
-              >
-                <div className="bg-gray-800/60 rounded-2xl h-full p-6 sm:p-7 flex flex-col gap-4">
-                  <div className="text-4xl sm:text-5xl font-bold text-blue-300">{service.number}</div>
-                  <div className="space-y-2">
-                    <h4 className="text-xl sm:text-2xl font-bold leading-tight text-white">{service.title}</h4>
-                    <p className="text-white/80 text-sm sm:text-base text-balance">{service.description}</p>
-                  </div>
-                  <ul className="space-y-2 text-sm sm:text-base text-white/90">
-                    {items.map((item: string, itemIndex: number) => (
-                      <li key={itemIndex} className="flex items-start gap-2">
-                        <svg className="w-4 h-4 mt-1 flex-none text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
-                        <span className="leading-snug">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="mt-auto pt-2">
-                    <button
-                      type="button"
-                      onClick={() => openForm(service)}
-                      className="w-full rounded-full bg-white text-black text-xs sm:text-sm font-semibold uppercase tracking-wide py-2.5 hover:bg-zinc-200 transition"
-                    >
-                      Solicitar este servicio
-                    </button>
-                  </div>
+
+        <div className="space-y-6">
+          <div className="text-center space-y-3">
+            <p className="text-xs uppercase tracking-[0.28em] text-white/55">Manejo de redes</p>
+            <h4 className="text-2xl sm:text-3xl font-bold">Empieza tu plan personalizado</h4>
+            <p className="text-sm sm:text-base text-white/65 max-w-3xl mx-auto">
+              Cuéntanos tu meta, presupuesto y prioridades. Te enviamos una propuesta hecha a medida.
+            </p>
+          </div>
+
+          <article className="rounded-2xl overflow-hidden border border-white/10 bg-black/50">
+            <div className="relative h-36 overflow-hidden bg-[radial-gradient(circle_at_20%_25%,rgba(236,72,153,0.35),transparent_58%),radial-gradient(circle_at_84%_20%,rgba(96,165,250,0.35),transparent_48%),linear-gradient(130deg,rgba(2,6,23,0.96),rgba(30,27,75,0.92),rgba(60,7,83,0.9))]">
+              <div className="absolute -left-10 top-5 h-24 w-24 rounded-full bg-fuchsia-500/30 blur-2xl" />
+              <div className="absolute right-1 top-2 h-20 w-20 rounded-full bg-blue-400/30 blur-2xl" />
+              <div className="absolute inset-x-0 top-4 flex justify-center">
+                <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl border border-white/25 bg-black/35 backdrop-blur">
+                  <Sparkles className="h-6 w-6 text-white" strokeWidth={2.2} aria-hidden />
                 </div>
               </div>
-            );
-          })}
+              <div className="absolute inset-x-0 bottom-0 p-4 text-center">
+                <p className="text-[11px] uppercase tracking-[0.22em] text-blue-200/90 mb-1">Hecho a medida</p>
+                <h5 className="text-lg font-bold text-white">Plan personalizado</h5>
+              </div>
+            </div>
+
+            <div className="p-5 flex flex-col text-center">
+              <p className="text-sm text-white/75 leading-relaxed">
+                Diseñamos una estrategia según tus objetivos, rubro y presupuesto para que inviertas de forma inteligente.
+              </p>
+              <ul className="mt-4 space-y-2 text-sm text-white/85 max-w-[20rem] mx-auto">
+                <li className="flex items-start justify-center gap-2 text-center">
+                  <span className="mt-2 h-1.5 w-1.5 rounded-full bg-fuchsia-300" />
+                  <span>Diagnóstico inicial de tu marca</span>
+                </li>
+                <li className="flex items-start justify-center gap-2 text-center">
+                  <span className="mt-2 h-1.5 w-1.5 rounded-full bg-fuchsia-300" />
+                  <span>Mix flexible de servicios y entregables</span>
+                </li>
+                <li className="flex items-start justify-center gap-2 text-center">
+                  <span className="mt-2 h-1.5 w-1.5 rounded-full bg-fuchsia-300" />
+                  <span>Plan escalable por etapas de crecimiento</span>
+                </li>
+              </ul>
+
+              <button
+                type="button"
+                onClick={() =>
+                  openForm({
+                    title: "Manejo de redes - Plan personalizado",
+                    description: "Propuesta diseñada según objetivos, rubro y presupuesto.",
+                    serviceKind: "plan",
+                  })
+                }
+                className="mt-6 rounded-full bg-white text-black text-xs font-semibold uppercase tracking-wide py-2.5 hover:bg-zinc-200 transition"
+              >
+                Empezar plan personalizado
+              </button>
+            </div>
+          </article>
         </div>
       </div>
 
       {isFormOpen && selectedService ? (
         <ServiceRequestModal
-          key={selectedService.title ?? selectedService.number ?? "service-form"}
+          key={`${selectedService.title ?? selectedService.number ?? "service-form"}-${selectedService.prefillPlan ?? ""}`}
           service={selectedService}
           onClose={closeForm}
         />

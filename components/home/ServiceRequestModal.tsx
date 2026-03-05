@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { motion } from "framer-motion";
 import { X } from "lucide-react";
+import Image from "next/image";
 import type { Service } from "./ServicesClient";
 
 type Option = {
@@ -15,23 +16,16 @@ const interestOptions: Option[] = [
   { value: "Branding (logo, etc.)", label: "Branding (logo, etc.)" },
   { value: "Cobertura de eventos", label: "Cobertura de eventos" },
   { value: "Marketing de influencers", label: "Marketing de influencers" },
-  { value: "Asesoria para redes sociales", label: "Asesoria para redes sociales" },
-  { value: "Produccion (fotografia y video)", label: "Produccion (fotografia y video)" },
+  { value: "Asesoría para redes sociales", label: "Asesoría para redes sociales" },
+  { value: "Producción (fotografía y video)", label: "Producción (fotografía y video)" },
   { value: "Estrategia de posicionamiento", label: "Estrategia de posicionamiento" },
-  { value: "Creacion de banners, flyers, etc.", label: "Creacion de banners, flyers, etc." },
+  { value: "Creación de banners, flyers, etc.", label: "Creación de banners, flyers, etc." },
   { value: "Manejo de publicidad", label: "Manejo de publicidad" },
-  { value: "Creacion de pagina web", label: "Creacion de pagina web" },
-];
-
-const socialPlanOptions: Option[] = [
-  { value: "8 posts / 12 historias mensuales", label: "8 posts / 12 historias mensuales" },
-  { value: "12 posts / 18 historias mensuales", label: "12 posts / 18 historias mensuales" },
-  { value: "20 posts / 25 historias mensuales", label: "20 posts / 25 historias mensuales" },
-  { value: "28 posts / 56 historias mensuales", label: "28 posts / 56 historias mensuales" },
+  { value: "Creación de página web", label: "Creación de página web" },
 ];
 
 const sourceOptions: Option[] = [
-  { value: "Promocion online en redes", label: "Promocion online en redes" },
+  { value: "Promoción online en redes", label: "Promoción online en redes" },
   { value: "Por un conocido (amigo o familiar)", label: "Por un conocido (amigo o familiar)" },
   { value: "Influencer conocido", label: "Influencer conocido" },
 ];
@@ -62,18 +56,24 @@ type ServiceRequestModalProps = {
 
 const ServiceRequestModal = ({ service, onClose }: ServiceRequestModalProps) => {
   const serviceTitle = service.title || "Servicio seleccionado";
+  
   const defaultInterests = useMemo(() => {
     const lowered = serviceTitle.toLowerCase();
-    if (lowered.includes("redes") || lowered.includes("social")) {
+    if (service.serviceKind === "plan" || lowered.includes("redes") || lowered.includes("social")) {
       return ["Manejo de redes sociales"];
     }
     return [];
-  }, [serviceTitle]);
+  }, [service.serviceKind, serviceTitle]);
 
   const [interests, setInterests] = useState<string[]>(defaultInterests);
   const [submitStatus, setSubmitStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
 
   const showSocialPlan = interests.includes("Manejo de redes sociales");
+
+  useEffect(() => {
+    setInterests(defaultInterests);
+    setSubmitStatus("idle");
+  }, [defaultInterests]);
 
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
@@ -121,7 +121,7 @@ const ServiceRequestModal = ({ service, onClose }: ServiceRequestModalProps) => 
       otherInterest: String(formData.get("otherInterest") || "").trim(),
       currentProblem: String(formData.get("currentProblem") || "").trim(),
       needsSocialPlan: showSocialPlan,
-      socialPlan: String(formData.get("socialPlan") || "").trim(),
+      socialPlan: showSocialPlan ? "Plan personalizado" : "",
       socialPlanOther: String(formData.get("socialPlanOther") || "").trim(),
       budget: String(formData.get("budget") || "").trim(),
       budgetOther: String(formData.get("budgetOther") || "").trim(),
@@ -129,7 +129,15 @@ const ServiceRequestModal = ({ service, onClose }: ServiceRequestModalProps) => 
       website: String(formData.get("website") || "").trim(),
     };
 
-    if (!payload.companyName || !payload.companyRnc || !payload.contactEmail || !payload.contactPhone || !payload.socialHandle || !payload.brandDescription || !payload.currentProblem) {
+    if (
+      !payload.companyName ||
+      !payload.companyRnc ||
+      !payload.contactEmail ||
+      !payload.contactPhone ||
+      !payload.socialHandle ||
+      !payload.brandDescription ||
+      !payload.currentProblem
+    ) {
       setSubmitStatus("error");
       return;
     }
@@ -139,7 +147,7 @@ const ServiceRequestModal = ({ service, onClose }: ServiceRequestModalProps) => 
       return;
     }
 
-    if (payload.needsSocialPlan && !payload.socialPlan && !payload.socialPlanOther) {
+    if (payload.needsSocialPlan && !payload.socialPlanOther) {
       setSubmitStatus("error");
       return;
     }
@@ -168,8 +176,7 @@ const ServiceRequestModal = ({ service, onClose }: ServiceRequestModalProps) => 
 
       setSubmitStatus("success");
       form.reset();
-      setInterests(defaultInterests);
-    } catch (error) {
+      setInterests(defaultInterests);    } catch (error) {
       console.error("Failed to submit service request", error);
       setSubmitStatus("error");
     }
@@ -181,7 +188,7 @@ const ServiceRequestModal = ({ service, onClose }: ServiceRequestModalProps) => 
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-stretch sm:items-center justify-center px-3 py-3 sm:px-6 sm:py-10">
+    <div className="fixed inset-0 z-50 flex items-stretch justify-center px-3 py-3">
       <button
         type="button"
         onClick={handleClose}
@@ -189,52 +196,57 @@ const ServiceRequestModal = ({ service, onClose }: ServiceRequestModalProps) => 
         className="absolute inset-0 bg-black/80 backdrop-blur-sm"
       />
       <div
-        className="modal-frame w-full h-[calc(100dvh-1.5rem)] sm:h-auto max-w-6xl max-h-[calc(100dvh-1.5rem)] sm:max-h-[90vh] [--modal-radius:24px] sm:[--modal-radius:36px] [--modal-border:2px] sm:[--modal-border:3px]"
+        className="modal-frame w-full h-[calc(100dvh-1.5rem)] max-w-[520px] sm:max-w-[560px] max-h-[calc(100dvh-1.5rem)] [--modal-radius:24px] [--modal-border:2px]"
         role="dialog"
         aria-modal="true"
         aria-labelledby="service-request-title"
       >
-        <div className="modal-panel flex h-full sm:h-auto max-h-[calc(100dvh-1.5rem)] sm:max-h-[90vh] flex-col overflow-hidden bg-zinc-950/95">
-          <div className="relative z-10 flex items-start justify-between gap-4 border-b border-white/10 bg-black/70 px-5 pb-4 pt-[calc(env(safe-area-inset-top)+0.75rem)] sm:px-8 sm:py-5 backdrop-blur">
-            <div>
-              <p className="text-[0.65rem] sm:text-xs uppercase tracking-[0.3em] text-white/60">Solicitud de servicio</p>
-              <h3 id="service-request-title" className="text-lg sm:text-2xl lg:text-3xl font-bold text-white mt-1">Completa el formulario</h3>
-              <p className="text-[0.7rem] sm:text-sm text-white/60 mt-2 max-w-xl">
-                Queremos entender tu negocio para enviarte una propuesta a medida por correo.
-              </p>
+        <div className="modal-panel flex h-full max-h-[calc(100dvh-1.5rem)] flex-col overflow-hidden bg-zinc-950/95">
+          <div className="relative z-10 overflow-hidden border-b border-white/10">
+            <div className="relative h-[96px]">
+              <Image
+                src="/content-engage.png"
+                alt="Engage agency"
+                fill
+                priority
+                sizes="100vw"
+                className="object-cover object-[center_62%]"
+              />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/10 via-transparent to-black/10" />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/26 via-black/8 to-transparent" />
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-fuchsia-300/45 to-transparent" />
+              <div className="absolute right-4 top-[calc(env(safe-area-inset-top)+0.5rem)]">
+                <button
+                  type="button"
+                  onClick={handleClose}
+                  className="shrink-0 rounded-full border border-white/10 bg-black/62 p-2 transition hover:bg-white/10"
+                  aria-label="Cerrar"
+                >
+                  <X className="h-5 w-5 text-white" />
+                </button>
+              </div>
             </div>
-            <button
-              type="button"
-              onClick={handleClose}
-              className="rounded-full p-2 border border-white/10 bg-black/60 hover:bg-white/10 transition"
-              aria-label="Cerrar"
-            >
-              <X className="h-5 w-5 text-white" />
-            </button>
+            <p id="service-request-title" className="sr-only">
+              Solicitud de servicio
+            </p>
           </div>
 
-          <div className="modal-scrollbar relative flex-1 overflow-y-auto px-4 pb-[calc(env(safe-area-inset-bottom)+24px)] pt-5 sm:px-10 sm:pt-8">
+          <div className="modal-scrollbar relative flex-1 overflow-y-auto px-4 pb-[calc(env(safe-area-inset-bottom)+24px)] pt-4">
             <div className="absolute inset-0 bg-grid-small opacity-10 pointer-events-none" />
-            <div className="relative grid gap-4 sm:gap-6 lg:grid-cols-[minmax(0,0.45fr)_minmax(0,1fr)] lg:gap-8">
-              <div className="space-y-3 lg:hidden">
-                <div className="rounded-2xl border border-white/10 bg-black/50 px-4 py-3">
-                  <p className="text-[0.6rem] uppercase tracking-[0.25em] text-white/50">Servicio seleccionado</p>
-                  <p className="text-base font-semibold text-white mt-2">{serviceTitle}</p>
+            <div className="relative grid gap-4">
+              <div className="space-y-4">
+                <div className="rounded-2xl border border-white/10 bg-[radial-gradient(circle_at_14%_14%,rgba(236,72,153,0.14),transparent_44%),radial-gradient(circle_at_86%_16%,rgba(96,165,250,0.14),transparent_44%),linear-gradient(145deg,#07080f,#101326)] px-4 py-4 sm:px-5 sm:py-5">                  <h4 className="mt-2 text-xl font-semibold leading-tight text-white sm:text-2xl">{serviceTitle}</h4>                  <p className="mt-3 text-sm text-white/75">
+                    Completa los datos para enviarte una propuesta profesional alineada a tu negocio.
+                  </p>
+                  <div className="mt-4 flex flex-wrap gap-2 text-[0.65rem] text-white/72">
+                    <span className="rounded-full border border-white/10 bg-black/40 px-3 py-1">Tiempo estimado: 3-5 min.</span>
+                    <span className="rounded-full border border-white/10 bg-black/40 px-3 py-1">Respuesta en 24-48 horas.</span>
+                  </div>
                 </div>
-                <div className="flex flex-wrap gap-2 text-[0.65rem] text-white/70">
-                  <span className="rounded-full border border-white/10 bg-black/40 px-3 py-1">Tiempo estimado: 3-5 min.</span>
-                  <span className="rounded-full border border-white/10 bg-black/40 px-3 py-1">Respuesta en 24-48 horas.</span>
-                </div>
-              </div>
 
-              <div className="hidden space-y-4 lg:sticky lg:top-6 lg:self-start lg:block">
-                <div className="rounded-2xl border border-white/10 bg-black/50 px-5 py-4">
-                  <p className="text-xs uppercase tracking-[0.28em] text-white/50">Servicio seleccionado</p>
-                  <p className="text-lg font-semibold text-white mt-2">{serviceTitle}</p>
-                </div>
                 <div className="rounded-2xl border border-white/10 bg-black/40 px-5 py-4">
-                  <p className="text-xs uppercase tracking-[0.28em] text-white/50">Que sigue</p>
-                  <ul className="mt-3 space-y-2 text-xs sm:text-sm text-white/70">
+                  <p className="text-xs uppercase tracking-[0.28em] text-white/50">Qué sigue</p>
+                  <ul className="mt-3 space-y-2 text-xs text-white/70 sm:text-sm">
                     <li className="flex items-start gap-2">
                       <span className="mt-2 h-1.5 w-1.5 rounded-full bg-blue-300" />
                       <span>Tiempo estimado: 3-5 min.</span>
@@ -253,10 +265,10 @@ const ServiceRequestModal = ({ service, onClose }: ServiceRequestModalProps) => 
 
               <form onSubmit={handleSubmit}>
                 <input type="text" name="website" tabIndex={-1} autoComplete="off" className="hidden" />
-                <fieldset disabled={submitStatus === "submitting"} className="space-y-5 sm:space-y-6 lg:space-y-7">
+                <fieldset disabled={submitStatus === "submitting"} className="space-y-5">
                   <div className={cardClass}>
                     <h4 className="text-base sm:text-lg font-semibold text-white mb-4">Datos principales</h4>
-                    <div className="grid gap-4 sm:grid-cols-2">
+                    <div className="grid gap-4">
                       <div className="space-y-2">
                         <label htmlFor="companyName" className={labelClass}>Nombre de la empresa *</label>
                         <input id="companyName" name="companyName" required className={inputClass} placeholder="Nombre legal o comercial" />
@@ -266,14 +278,14 @@ const ServiceRequestModal = ({ service, onClose }: ServiceRequestModalProps) => 
                         <input id="companyRnc" name="companyRnc" required className={inputClass} placeholder="RNC" />
                       </div>
                       <div className="space-y-2">
-                        <label htmlFor="contactEmail" className={labelClass}>Correo electronico de contacto *</label>
+                        <label htmlFor="contactEmail" className={labelClass}>Correo electrónico de contacto *</label>
                         <input id="contactEmail" name="contactEmail" type="email" required className={inputClass} placeholder="correo@empresa.com" />
                       </div>
                       <div className="space-y-2">
-                        <label htmlFor="contactPhone" className={labelClass}>Numero de contacto *</label>
+                        <label htmlFor="contactPhone" className={labelClass}>Número de contacto *</label>
                         <input id="contactPhone" name="contactPhone" type="tel" required className={inputClass} placeholder="+1 809 000 0000" />
                       </div>
-                      <div className="space-y-2 sm:col-span-2">
+                      <div className="space-y-2">
                         <label htmlFor="socialHandle" className={labelClass}>Usuario de Instagram, TikTok o Facebook *</label>
                         <input id="socialHandle" name="socialHandle" required className={inputClass} placeholder="@usuario / facebook.com/..." />
                       </div>
@@ -284,8 +296,8 @@ const ServiceRequestModal = ({ service, onClose }: ServiceRequestModalProps) => 
                     <h4 className="text-base sm:text-lg font-semibold text-white mb-4">Sobre tu marca</h4>
                     <div className="space-y-4">
                       <div className="space-y-2">
-                        <label htmlFor="brandDescription" className={labelClass}>Breve explicacion de que se trata tu marca *</label>
-                        <textarea id="brandDescription" name="brandDescription" rows={4} required className={inputClass} placeholder="Cuentanos de tu marca, productos o servicios." />
+                        <label htmlFor="brandDescription" className={labelClass}>Breve explicación de qué se trata tu marca *</label>
+                        <textarea id="brandDescription" name="brandDescription" rows={4} required className={inputClass} placeholder="Cuéntanos de tu marca, productos o servicios." />
                       </div>
                       <div className="space-y-2">
                         <label htmlFor="servicesOffered" className={labelClass}>Listado de todos los servicios que ofreces</label>
@@ -295,8 +307,8 @@ const ServiceRequestModal = ({ service, onClose }: ServiceRequestModalProps) => 
                   </div>
 
                   <div className={cardClass}>
-                    <h4 className="text-base sm:text-lg font-semibold text-white mb-4">Que servicios te interesan? *</h4>
-                    <div className="grid gap-3 sm:grid-cols-2">
+                    <h4 className="text-base sm:text-lg font-semibold text-white mb-4">¿Qué servicios te interesan? *</h4>
+                    <div className="grid gap-3">
                       {interestOptions.map((option) => {
                         const inputId = `interest-${toId(option.value)}`;
                         return (
@@ -322,36 +334,25 @@ const ServiceRequestModal = ({ service, onClose }: ServiceRequestModalProps) => 
                   </div>
 
                   <div className={cardClass}>
-                    <h4 className="text-base sm:text-lg font-semibold text-white mb-4">Tu situacion actual</h4>
+                    <h4 className="text-base sm:text-lg font-semibold text-white mb-4">Tu situación actual</h4>
                     <div className="space-y-4">
                       <div className="space-y-2">
-                        <label htmlFor="currentProblem" className={labelClass}>Cual es el problema que estas enfrentando ahora mismo? *</label>
+                        <label htmlFor="currentProblem" className={labelClass}>¿Cuál es el problema que estás enfrentando ahora mismo? *</label>
                         <textarea id="currentProblem" name="currentProblem" rows={3} required className={inputClass} placeholder="Describe el reto principal de tu negocio." />
                       </div>
                       {showSocialPlan ? (
                         <div className="space-y-3">
-                          <p className="text-sm font-semibold text-white/80">Si te interesa el manejo de redes sociales, que plan te atrae?</p>
-                          <div className="grid gap-3 sm:grid-cols-2">
-                            {socialPlanOptions.map((option) => {
-                              const inputId = `plan-${toId(option.value)}`;
-                              return (
-                                <label key={option.value} htmlFor={inputId} className="flex items-start gap-3 text-sm text-white/80">
-                                  <input
-                                    id={inputId}
-                                    type="radio"
-                                    name="socialPlan"
-                                    value={option.value}
-                                    className="mt-1 h-5 w-5 border-white/20 bg-black/60 accent-blue-400 sm:h-4 sm:w-4"
-                                    required={showSocialPlan}
-                                  />
-                                  <span>{option.label}</span>
-                                </label>
-                              );
-                            })}
-                          </div>
+                          <p className="text-sm font-semibold text-white/80">Empieza tu plan personalizado para redes sociales.</p>
                           <div className="space-y-2">
-                            <label htmlFor="socialPlanOther" className={labelClass}>Otro plan</label>
-                            <input id="socialPlanOther" name="socialPlanOther" className={inputClass} placeholder="Especifica otro plan si aplica" />
+                            <label htmlFor="socialPlanOther" className={labelClass}>Plan personalizado *</label>
+                            <textarea
+                              id="socialPlanOther"
+                              name="socialPlanOther"
+                              rows={3}
+                              className={inputClass}
+                              placeholder="Describe lo que necesitas para tu plan personalizado."
+                              required={showSocialPlan}
+                            />
                           </div>
                         </div>
                       ) : null}
@@ -362,8 +363,8 @@ const ServiceRequestModal = ({ service, onClose }: ServiceRequestModalProps) => 
                     <h4 className="text-base sm:text-lg font-semibold text-white mb-4">Presupuesto y referencia</h4>
                     <div className="space-y-6">
                       <div className="space-y-3">
-                        <p className="text-sm font-semibold text-white/80">A cuanto asciende tu presupuesto para este servicio? *</p>
-                        <div className="grid gap-3 sm:grid-cols-2">
+                        <p className="text-sm font-semibold text-white/80">¿A cuánto asciende tu presupuesto para este servicio? *</p>
+                        <div className="grid gap-3">
                           {budgetOptions.map((option) => {
                             const inputId = `budget-${toId(option.value)}`;
                             return (
@@ -388,8 +389,8 @@ const ServiceRequestModal = ({ service, onClose }: ServiceRequestModalProps) => 
                       </div>
 
                       <div className="space-y-3">
-                        <p className="text-sm font-semibold text-white/80">Como te enteraste de nosotros? *</p>
-                        <div className="grid gap-3 sm:grid-cols-2">
+                        <p className="text-sm font-semibold text-white/80">¿Cómo te enteraste de nosotros? *</p>
+                        <div className="grid gap-3">
                           {sourceOptions.map((option) => {
                             const inputId = `source-${toId(option.value)}`;
                             return (
@@ -411,14 +412,14 @@ const ServiceRequestModal = ({ service, onClose }: ServiceRequestModalProps) => 
                     </div>
                   </div>
 
-                  <div className={`${cardClass} flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between`}>
-                    <p className="text-xs text-white/60 sm:max-w-md">
+                  <div className={`${cardClass} flex flex-col gap-4`}>
+                    <p className="text-xs text-white/60">
                       Al enviar este formulario, aceptas que te contactemos por correo con la propuesta y siguientes pasos.
                     </p>
                     <button
                       type="submit"
                       disabled={submitStatus === "submitting"}
-                      className="w-full sm:w-auto rounded-full bg-white text-black text-sm font-semibold uppercase tracking-wide px-6 py-3 hover:bg-zinc-200 transition disabled:opacity-60"
+                      className="w-full rounded-full bg-white text-black text-sm font-semibold uppercase tracking-wide px-6 py-3 hover:bg-zinc-200 transition disabled:opacity-60"
                     >
                       {submitStatus === "submitting" ? "ENVIANDO..." : "ENVIAR SOLICITUD"}
                     </button>
@@ -490,3 +491,4 @@ const ServiceRequestModal = ({ service, onClose }: ServiceRequestModalProps) => 
 };
 
 export default ServiceRequestModal;
+

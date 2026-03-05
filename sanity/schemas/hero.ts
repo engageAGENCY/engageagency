@@ -2,43 +2,41 @@ import {defineField, defineType} from 'sanity'
 
 export default defineType({
   name: 'hero',
-  title: 'Héroe',
+  title: 'Hero',
   type: 'document',
   fields: [
     defineField({
       name: 'statusLabel',
-      title: 'Etiqueta de Estado',
+      title: 'Etiqueta de estado',
       type: 'string',
-      description: 'Pequeño texto sobre el botón (por ejemplo, Abierto para contrataciones)',
+      description: 'Texto pequeno sobre el titulo',
     }),
     defineField({
       name: 'titlePrimary',
-      title: 'Título Principal',
+      title: 'Titulo principal',
       type: 'string',
-      description: 'Primera línea del título (ej. Agencia)',
+      description: 'Linea principal del titulo',
     }),
     defineField({
       name: 'titleHighlight',
-      title: 'Título Destacado',
+      title: 'Titulo destacado',
       type: 'string',
-      description: 'Palabra destacada con gradiente (ej. Engage)',
+      description: 'Palabra destacada con estilo principal',
     }),
     defineField({
       name: 'description',
-      title: 'Descripción',
+      title: 'Descripcion',
       type: 'text',
     }),
     defineField({
       name: 'ctaLabel',
-      title: 'Etiqueta del CTA',
+      title: 'Texto del boton',
       type: 'string',
-      description: 'Texto del botón principal',
     }),
     defineField({
       name: 'ctaHref',
-      title: 'URL del CTA',
+      title: 'URL del boton',
       type: 'string',
-      description: 'Enlace del botón',
     }),
   ],
 })
