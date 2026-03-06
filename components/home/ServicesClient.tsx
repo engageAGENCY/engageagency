@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export type Service = {
   number?: string;
@@ -45,6 +45,23 @@ const servicePosterByNumber: Record<string, string> = {
   "05": "/videos/posters/service-05.jpg",
   "06": "/videos/posters/service-06.jpg",
 };
+
+const planCarouselImages = [
+  "/foto1.jpeg",
+  "/foto2.jpeg",
+  "/foto3.jpeg",
+  "/foto4.jpeg",
+  "/foto5.jpeg",
+  "/foto6.jpeg",
+  "/foto7.jpeg",
+  "/foto8.jpeg",
+  "/foto9.jpeg",
+  "/foto10.jpeg",
+  "/foto11.jpeg",
+  "/foto12.jpeg",
+  "/foto13.jpeg",
+  "/foto14.jpeg",
+];
 
 function normalizeServiceNumber(value?: string) {
   if (!value) return "";
@@ -136,6 +153,46 @@ function VideoPreview({ src, poster, title }: VideoPreviewProps) {
           </span>
         </button>
       ) : null}
+    </div>
+  );
+}
+
+type PhoneCarouselProps = {
+  images: string[];
+};
+
+function PhoneCarousel({ images }: PhoneCarouselProps) {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    if (images.length <= 1) return;
+
+    const timer = window.setInterval(() => {
+      setActiveIndex((current) => (current + 1) % images.length);
+    }, 2400);
+
+    return () => window.clearInterval(timer);
+  }, [images.length]);
+
+  if (!images.length) {
+    return <div className="h-full w-full bg-black" />;
+  }
+
+  return (
+    <div className="relative h-full w-full bg-black">
+      {images.map((src, index) => (
+        <Image
+          key={src}
+          src={src}
+          alt={`Vista ${index + 1} del plan personalizado`}
+          fill
+          priority={index === 0}
+          className={`absolute inset-0 object-cover transition-opacity duration-700 ease-out ${
+            index === activeIndex ? "opacity-100" : "opacity-0"
+          }`}
+          sizes="(max-width: 640px) 180px, (max-width: 1024px) 220px, 260px"
+        />
+      ))}
     </div>
   );
 }
@@ -280,7 +337,7 @@ const ServicesClient = ({ services }: ServicesClientProps) => {
                     aria-label="Espacio para carrusel dentro del celular"
                     data-carousel-slot="plan-personalizado"
                   >
-                    <div className="h-full w-full bg-[radial-gradient(circle_at_30%_20%,rgba(236,72,153,0.45),transparent_45%),radial-gradient(circle_at_70%_72%,rgba(96,165,250,0.45),transparent_52%),linear-gradient(160deg,rgba(10,14,30,0.96),rgba(22,28,52,0.98))]" />
+                    <PhoneCarousel images={planCarouselImages} />
                   </div>
                   <Image
                     src="/celular.png"
