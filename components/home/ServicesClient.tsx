@@ -192,7 +192,7 @@ function PhoneCarousel({ images }: PhoneCarouselProps) {
           className={`absolute inset-0 object-contain transition-opacity duration-700 ease-out ${
             index === activeIndex ? "opacity-100" : "opacity-0"
           }`}
-          sizes="(max-width: 640px) 250px, (max-width: 1024px) 320px, 420px"
+          sizes="(max-width: 640px) 290px, (max-width: 1024px) 440px, 560px"
         />
       ))}
     </div>
@@ -332,8 +332,8 @@ const ServicesClient = ({ services }: ServicesClientProps) => {
             <div className="relative overflow-hidden border-b border-white/10 bg-[radial-gradient(circle_at_20%_25%,rgba(236,72,153,0.35),transparent_58%),radial-gradient(circle_at_84%_20%,rgba(96,165,250,0.35),transparent_48%),linear-gradient(130deg,rgba(2,6,23,0.96),rgba(30,27,75,0.92),rgba(60,7,83,0.9))]">
               <div className="absolute -left-10 top-8 h-24 w-24 rounded-full bg-fuchsia-500/30 blur-2xl" />
               <div className="absolute right-1 top-3 h-20 w-20 rounded-full bg-blue-400/30 blur-2xl" />
-              <div className="relative mx-auto flex h-[28rem] w-full max-w-md items-center justify-center px-4 py-6 sm:h-[40rem] sm:max-w-2xl sm:px-6 sm:py-8">
-                <div className="relative w-[16.5rem] sm:w-[24rem] aspect-[1076/1628]">
+              <div className="relative mx-auto flex h-[31rem] w-full max-w-lg items-center justify-center px-3 py-6 sm:h-[48rem] sm:max-w-3xl sm:px-6 sm:py-8">
+                <div className="relative w-[18.2rem] sm:w-[30rem] aspect-[1076/1628]">
                   <div
                     className="absolute left-[8.8%] right-[8.8%] top-[5.7%] bottom-[5.6%] overflow-hidden rounded-[2.1rem] bg-black/70"
                     aria-label="Espacio para carrusel dentro del celular"
@@ -346,7 +346,7 @@ const ServicesClient = ({ services }: ServicesClientProps) => {
                     alt="Marco de celular para carrusel del plan personalizado"
                     fill
                     className="pointer-events-none select-none object-contain"
-                    sizes="(max-width: 640px) 270px, (max-width: 1024px) 360px, 420px"
+                    sizes="(max-width: 640px) 300px, (max-width: 1024px) 460px, 560px"
                   />
                 </div>
               </div>
