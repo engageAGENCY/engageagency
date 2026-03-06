@@ -5,63 +5,61 @@ type ShowcaseCard = {
   title: string;
   description: string;
   image: string;
-  result: string;
 };
 
 const showcaseCards: ShowcaseCard[] = [
   {
-    title: "Dirección visual para marcas premium",
+    title: "Direccion visual para marcas premium",
     description:
-      "Curaduria de contenido y linea grafica para perfiles que necesitan diferenciarse con coherencia visual.",
-    image: "/optimized/eng-agency2-1200.webp",
-    result: "Identidad consistente y mayor recordación de marca",
+      "Curaduria de contenido y linea grafica para perfiles que buscan una identidad clara y consistente.",
+    image: "/optimized/celulares1-1600.webp",
   },
   {
-    title: "Contenido orientado a conversión",
-    description: "Piezas editoriales diseñadas para captar atención, sostener alcance y llevar tráfico a conversión.",
-    image: "/optimized/eng-agency-1200.webp",
-    result: "Mejor tasa de respuesta en publicaciones y mensajes",
+    title: "Contenido orientado a conversion",
+    description:
+      "Piezas editoriales pensadas para captar atencion, sostener alcance y llevar trafico a conversion.",
+    image: "/optimized/celulares2-1600.webp",
   },
   {
     title: "Cuentas por nicho y objetivo",
     description:
-      "Casos ejecutados para salud, belleza y servicios profesionales con objetivos comerciales definidos.",
-    image: "/optimized/nn-1200.webp",
-    result: "Mensajes adaptados por audiencia y por etapa del cliente",
+      "Ejecuciones para salud, belleza y servicios profesionales con mensajes adaptados por audiencia.",
+    image: "/optimized/celulares3-1600.webp",
   },
   {
     title: "Portafolio operativo de la agencia",
-    description: "Material publicado para clientes reales, documentado por campañas y por categoria de servicio.",
-    image: "/optimized/ss-1200.webp",
-    result: "Ejecucion real del dia a dia en gestion de cuentas",
+    description:
+      "Material real publicado para clientes, documentado por campanas y por categoria de servicio.",
+    image: "/optimized/celulares4-1600.webp",
   },
 ];
 
 type VisualCardProps = {
   card: ShowcaseCard;
-  aspect: string;
   priority?: boolean;
 };
 
-function VisualCard({ card, aspect, priority = false }: VisualCardProps) {
+function VisualCard({ card, priority = false }: VisualCardProps) {
   return (
-    <article className="rounded-2xl border border-white/12 bg-black/90 overflow-hidden shadow-[0_24px_60px_-45px_rgba(0,0,0,1)]">
-      <div className={`relative w-full ${aspect}`}>
+    <article className="flex w-full flex-col items-center gap-5">
+      <div className="relative w-full max-w-[min(92vw,36rem)] aspect-[4/3]">
         <Image
           src={card.image}
           alt={card.title}
           fill
           priority={priority}
-          className="object-cover"
-          sizes="(max-width: 1279px) 100vw, 50vw"
+          className="object-contain drop-shadow-[0_22px_36px_rgba(0,0,0,0.55)]"
+          sizes="(max-width: 640px) 92vw, (max-width: 1280px) 44vw, 560px"
         />
       </div>
-      <div className="border-t border-white/10 bg-black/80 px-5 py-5 sm:px-6 sm:py-6">
-        <h4 className="text-lg sm:text-xl font-semibold text-white leading-snug">{card.title}</h4>
-        <p className="mt-2 text-sm sm:text-[0.96rem] text-zinc-300 leading-relaxed">{card.description}</p>
-        <p className="mt-3 text-xs sm:text-sm text-fuchsia-200/85">
-          <span className="font-semibold text-fuchsia-100">Impacto:</span> {card.result}
-        </p>
+
+      <div className="w-full max-w-[min(92vw,36rem)] rounded-2xl p-[1px] bg-[linear-gradient(90deg,#ffffff,#60a5fa,#a855f7,#ec4899,#ffffff)] animate-gradient-wave">
+        <div className="rounded-2xl border border-white/10 bg-black/80 px-5 py-5 sm:px-6 sm:py-6 text-center">
+          <h4 className="text-lg sm:text-xl font-semibold leading-snug text-transparent bg-clip-text bg-[linear-gradient(90deg,#ffffff,#60a5fa,#a855f7,#ec4899,#ffffff)] animate-gradient-wave">
+            {card.title}
+          </h4>
+          <p className="mt-2 text-sm sm:text-[0.96rem] text-zinc-300 leading-relaxed">{card.description}</p>
+        </div>
       </div>
     </article>
   );
@@ -70,47 +68,23 @@ function VisualCard({ card, aspect, priority = false }: VisualCardProps) {
 export default function VisualCases() {
   return (
     <section id="casos-visuales" className="py-16 sm:py-20 px-4 sm:px-6 md:px-10 border-t border-white/10">
-      <div className="max-w-6xl mx-auto space-y-8 sm:space-y-10">
+      <div className="mx-auto w-full max-w-[min(92rem,100%)] space-y-8 sm:space-y-10">
         <div className="text-center space-y-3 sm:space-y-4">
           <p className="text-xs uppercase tracking-[0.3em] text-white/55">Casos visuales</p>
           <h3 className="text-3xl sm:text-4xl font-bold text-white">Trabajo real para marcas reales</h3>
           <p className="text-sm sm:text-base text-zinc-300 max-w-3xl mx-auto">
-            Selección de proyectos ejecutados por la agencia con enfoque en resultados, no en piezas de relleno.
+            Seleccion de proyectos ejecutados por la agencia con enfoque en resultados, no en piezas de relleno.
           </p>
         </div>
 
-        <div className="space-y-5 xl:hidden">
-          <VisualCard card={showcaseCards[0]} aspect="aspect-[16/10]" priority />
-          <VisualCard card={showcaseCards[1]} aspect="aspect-[16/10]" />
-          <VisualCard card={showcaseCards[2]} aspect="aspect-[16/10]" />
-          <VisualCard card={showcaseCards[3]} aspect="aspect-[16/10]" />
-        </div>
-
-        <div className="hidden xl:block space-y-6">
-          <div className="grid grid-cols-12 gap-6">
-            <div className="col-span-7">
-              <VisualCard card={showcaseCards[0]} aspect="aspect-[16/10]" priority />
-            </div>
-            <div className="col-span-5 space-y-6">
-              <article className="rounded-2xl border border-white/12 bg-zinc-950 p-6">
-                <p className="text-xs uppercase tracking-[0.3em] text-white/55">Enfoque</p>
-                <h4 className="mt-3 text-2xl font-semibold text-white leading-tight">Dirección de contenido con criterio comercial</h4>
-                <p className="mt-3 text-sm text-zinc-300 leading-relaxed">
-                  Cada pieza responde a un objetivo concreto: atraer, educar, posicionar o convertir. Esto mantiene
-                  los perfiles activos con orden y una narrativa clara.
-                </p>
-              </article>
-              <VisualCard card={showcaseCards[1]} aspect="aspect-[16/10]" />
-            </div>
-          </div>
-          <div className="grid grid-cols-12 gap-6">
-            <div className="col-span-6">
-              <VisualCard card={showcaseCards[2]} aspect="aspect-[16/10]" />
-            </div>
-            <div className="col-span-6">
-              <VisualCard card={showcaseCards[3]} aspect="aspect-[16/10]" />
-            </div>
-          </div>
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-y-12 gap-x-10 place-items-center">
+          {showcaseCards.map((card, index) => (
+            <VisualCard
+              key={`${card.image}-${index}`}
+              card={card}
+              priority={index === 0}
+            />
+          ))}
         </div>
 
         <div className="flex justify-center pt-2">
