@@ -26,9 +26,9 @@ const Portfolio = async () => {
   return (
     <section id="portfolio" className="py-20 sm:py-24 px-4 sm:px-6 md:px-12 border-t border-white/10 bg-black">
       <div className="max-w-6xl mx-auto">
-        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-10 sm:mb-12">
+        <div className="flex flex-col items-center gap-3 mb-10 sm:mb-12 text-center">
           <div>
-            <h2 className="text-3xl sm:text-4xl font-display uppercase">Casos de estudio</h2>
+            <h2 className="text-3xl sm:text-4xl font-display uppercase">PORTAFOLIO</h2>
             <p className="text-zinc-400 text-sm sm:text-base mt-2 text-balance">
               Proyectos documentados con contexto, estrategia aplicada y resultado.
             </p>

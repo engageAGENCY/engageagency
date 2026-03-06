@@ -112,6 +112,12 @@ export default defineType({
       type: 'url',
     }),
     defineField({
+      name: 'profileLink',
+      title: 'Link de perfil (Instagram)',
+      type: 'url',
+      description: 'Pega el link del perfil para el bot\u00f3n "Ver perfil completo" en la p\u00e1gina del proyecto.',
+    }),
+    defineField({
       name: 'order',
       title: 'Orden',
       type: 'number',

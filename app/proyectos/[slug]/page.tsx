@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PortableText, type PortableTextReactComponents } from "@portabletext/react";
 import imageUrlBuilder from "@sanity/image-url";
@@ -80,44 +81,69 @@ export default async function ProjectDetailPage({ params }: { params: { slug: st
     notFound();
   }
 
+  const profileUrl = project.profileLink || project.link || null;
+
   return (
     <main className="min-h-screen bg-black text-white">
-      <section className="px-4 sm:px-6 md:px-12 pt-36 pb-16 sm:pt-44 lg:pt-48">
-        <div className="max-w-5xl mx-auto space-y-10">
-          <div className="space-y-4">
-            <p className="text-xs uppercase tracking-[0.35em] text-zinc-500">Proyecto</p>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-display">{project.title}</h1>
+      <section className="px-4 sm:px-6 lg:px-10 xl:px-14 pt-32 pb-14 sm:pt-40 sm:pb-20">
+        <div className="mx-auto w-full max-w-[min(100%,1120px)] space-y-8 sm:space-y-10">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <Link
+              href="/#portfolio"
+              className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-2 text-sm font-medium text-white transition hover:bg-white/10"
+            >
+              <span aria-hidden>&larr;</span>
+              <span>Volver al portafolio</span>
+            </Link>
+            {profileUrl ? (
+              <a
+                href={profileUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex rounded-full p-[1px] bg-[linear-gradient(90deg,#ffffff,#60a5fa,#a855f7,#ec4899,#ffffff)] animate-gradient-wave shadow-[0_0_28px_rgba(168,85,247,0.35)]"
+              >
+                <span className="rounded-full bg-black px-4 py-2 text-xs sm:text-sm font-semibold uppercase tracking-[0.14em] text-white transition hover:bg-zinc-900">
+                  Ver perfil completo
+                </span>
+              </a>
+            ) : null}
+          </div>
+
+          <div className="rounded-2xl border border-white/10 bg-zinc-900/30 p-5 sm:p-7 md:p-8 space-y-4">
+            <p className="text-xs uppercase tracking-[0.35em] text-zinc-500">PORTAFOLIO</p>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-display leading-tight">{project.title}</h1>
             {project.description && (
-              <p className="text-base sm:text-lg text-zinc-300 max-w-3xl">{project.description}</p>
+              <p className="text-base sm:text-lg text-zinc-300 max-w-3xl text-balance">{project.description}</p>
             )}
-            <div className="flex flex-wrap gap-4 text-sm text-zinc-400">
-              {project.client && <span>Cliente: {project.client}</span>}
-              {project.year && <span>A&ntilde;o: {project.year}</span>}
-              {project.link && (
-                <a className="text-white hover:text-gray-200 underline" href={project.link} target="_blank" rel="noreferrer">
-                  Ver sitio
-                </a>
-              )}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-sm text-zinc-300">
+              {project.client ? (
+                <span className="rounded-xl border border-white/10 bg-black/30 px-3 py-2">Cliente: {project.client}</span>
+              ) : null}
+              {project.year ? (
+                <span className="rounded-xl border border-white/10 bg-black/30 px-3 py-2">A&ntilde;o: {project.year}</span>
+              ) : null}
             </div>
           </div>
 
           {project.image?.asset && (
-            <div
-              className="relative w-full rounded-3xl overflow-hidden border border-white/10 bg-black"
-              style={{ aspectRatio: resolveAspectRatio(project.image.width, project.image.height, 16 / 9) }}
-            >
-              <Image
-                src={urlFor(project.image).width(2000).url()}
-                alt={project.title}
-                fill
-                className="object-contain bg-black"
-                sizes="(max-width: 1024px) 100vw, min(70vw, 1100px)"
-              />
+            <div className="rounded-3xl border border-white/10 bg-zinc-950/50 p-2 sm:p-3">
+              <div
+                className="relative w-full rounded-2xl overflow-hidden bg-black"
+                style={{ aspectRatio: resolveAspectRatio(project.image.width, project.image.height, 16 / 9) }}
+              >
+                <Image
+                  src={urlFor(project.image).width(2200).url()}
+                  alt={project.title}
+                  fill
+                  className="object-contain bg-black"
+                  sizes="(max-width: 1024px) 100vw, min(88vw, 1120px)"
+                />
+              </div>
             </div>
           )}
 
           {project.services?.length ? (
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 rounded-2xl border border-white/10 bg-zinc-900/20 p-4">
               {project.services.map((service: string) => (
                 <span key={service} className="px-3 py-1 rounded-full text-xs bg-white/10 border border-white/10">
                   {service}
@@ -127,7 +153,7 @@ export default async function ProjectDetailPage({ params }: { params: { slug: st
           ) : null}
 
           {project.body?.length ? (
-            <div className="max-w-none">
+            <div className="rounded-2xl border border-white/10 bg-zinc-900/20 p-5 sm:p-6 max-w-none">
               <PortableText value={project.body} components={portableTextComponents} />
             </div>
           ) : null}
@@ -149,7 +175,7 @@ export default async function ProjectDetailPage({ params }: { params: { slug: st
           {project.gallery?.length ? (
             <div className="space-y-4">
               <h2 className="text-lg font-semibold">Galer&iacute;a</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 {project.gallery.map((image: any, index: number) => (
                   <div
                     key={image._key || index}
@@ -172,7 +198,7 @@ export default async function ProjectDetailPage({ params }: { params: { slug: st
           {project.videos?.length ? (
             <div className="space-y-4">
               <h2 className="text-lg font-semibold">Videos</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 {project.videos.map((video: any, index: number) => {
                   if (!video?.url) return null;
                   const embedUrl = getEmbedUrl(video.url);
@@ -199,6 +225,16 @@ export default async function ProjectDetailPage({ params }: { params: { slug: st
               </div>
             </div>
           ) : null}
+
+          <div className="pt-2">
+            <Link
+              href="/#portfolio"
+              className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-2 text-sm font-medium text-white transition hover:bg-white/10"
+            >
+              <span aria-hidden>&larr;</span>
+              <span>Volver al portafolio</span>
+            </Link>
+          </div>
         </div>
       </section>
     </main>
