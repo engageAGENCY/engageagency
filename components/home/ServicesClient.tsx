@@ -237,8 +237,9 @@ const ServicesClient = ({ services }: ServicesClientProps) => {
               const mappedVideoUrl = serviceVideoByNumber[serviceNumber];
               const mappedPosterUrl = servicePosterByNumber[serviceNumber];
               const primaryReel = Array.isArray(service.reels) ? service.reels.find((reel) => reel?.url) : undefined;
-              const videoUrl = mappedVideoUrl || primaryReel?.url;
-              const videoPoster = mappedVideoUrl
+              const videoUrl = primaryReel?.url || mappedVideoUrl;
+              const isUsingMappedVideo = Boolean(mappedVideoUrl) && videoUrl === mappedVideoUrl;
+              const videoPoster = isUsingMappedVideo
                 ? mappedPosterUrl || primaryReel?.posterUrl || primaryReel?.poster?.asset?.url || "/optimized/content-engage-1600.webp"
                 : primaryReel?.posterUrl || primaryReel?.poster?.asset?.url || mappedPosterUrl || "/optimized/content-engage-1600.webp";
               const reversed = index % 2 === 1;
