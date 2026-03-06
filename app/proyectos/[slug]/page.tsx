@@ -13,6 +13,13 @@ function urlFor(source: any) {
   return builder.image(source);
 }
 
+function resolveAspectRatio(width?: number, height?: number, fallback = 16 / 9) {
+  if (!width || !height) return fallback;
+  const ratio = width / height;
+  if (!Number.isFinite(ratio) || ratio <= 0) return fallback;
+  return ratio;
+}
+
 const portableTextComponents = {
   block: {
     h2: (props) => (
@@ -95,13 +102,16 @@ export default async function ProjectDetailPage({ params }: { params: { slug: st
           </div>
 
           {project.image?.asset && (
-            <div className="relative w-full aspect-[16/9] rounded-3xl overflow-hidden border border-white/10 bg-black">
+            <div
+              className="relative w-full rounded-3xl overflow-hidden border border-white/10 bg-black"
+              style={{ aspectRatio: resolveAspectRatio(project.image.width, project.image.height, 16 / 9) }}
+            >
               <Image
-                src={urlFor(project.image).width(1600).height(900).url()}
+                src={urlFor(project.image).width(2000).url()}
                 alt={project.title}
                 fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 70vw"
+                className="object-contain bg-black"
+                sizes="(max-width: 1024px) 100vw, min(70vw, 1100px)"
               />
             </div>
           )}
@@ -141,12 +151,16 @@ export default async function ProjectDetailPage({ params }: { params: { slug: st
               <h2 className="text-lg font-semibold">Galer&iacute;a</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {project.gallery.map((image: any, index: number) => (
-                  <div key={image._key || index} className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden border border-white/10">
+                  <div
+                    key={image._key || index}
+                    className="relative w-full rounded-2xl overflow-hidden border border-white/10 bg-black"
+                    style={{ aspectRatio: resolveAspectRatio(image.width, image.height, 4 / 3) }}
+                  >
                     <Image
-                      src={urlFor(image).width(1200).height(900).url()}
+                      src={urlFor(image).width(1600).url()}
                       alt={image.alt || project.title}
                       fill
-                      className="object-cover"
+                      className="object-contain bg-black"
                       sizes="(max-width: 768px) 100vw, 50vw"
                     />
                   </div>

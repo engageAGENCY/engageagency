@@ -3,10 +3,25 @@ import { client, isSanityConfigured } from "./sanity.client";
 
 export const projectsQuery = groq`*[_type == "project"] | order(order asc, _createdAt desc){
   ...,
+  image{
+    ...,
+    "width": asset->metadata.dimensions.width,
+    "height": asset->metadata.dimensions.height
+  },
   "slug": slug.current
 }`;
 export const projectBySlugQuery = groq`*[_type == "project" && slug.current == $slug][0]{
   ...,
+  image{
+    ...,
+    "width": asset->metadata.dimensions.width,
+    "height": asset->metadata.dimensions.height
+  },
+  gallery[]{
+    ...,
+    "width": asset->metadata.dimensions.width,
+    "height": asset->metadata.dimensions.height
+  },
   "slug": slug.current
 }`;
 export const projectSlugsQuery = groq`*[_type == "project" && defined(slug.current)].slug.current`;
