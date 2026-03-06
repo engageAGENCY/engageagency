@@ -47,20 +47,20 @@ const servicePosterByNumber: Record<string, string> = {
 };
 
 const planCarouselImages = [
-  "/foto1.jpeg",
-  "/foto2.jpeg",
-  "/foto3.jpeg",
-  "/foto4.jpeg",
-  "/foto5.jpeg",
-  "/foto6.jpeg",
-  "/foto7.jpeg",
-  "/foto8.jpeg",
-  "/foto9.jpeg",
-  "/foto10.jpeg",
-  "/foto11.jpeg",
-  "/foto12.jpeg",
-  "/foto13.jpeg",
-  "/foto14.jpeg",
+  "/carousel/foto1.jpg",
+  "/carousel/foto2.jpg",
+  "/carousel/foto3.jpg",
+  "/carousel/foto4.jpg",
+  "/carousel/foto5.jpg",
+  "/carousel/foto6.jpg",
+  "/carousel/foto7.jpg",
+  "/carousel/foto8.jpg",
+  "/carousel/foto9.jpg",
+  "/carousel/foto10.jpg",
+  "/carousel/foto11.jpg",
+  "/carousel/foto12.jpg",
+  "/carousel/foto13.jpg",
+  "/carousel/foto14.jpg",
 ];
 
 function normalizeServiceNumber(value?: string) {
@@ -186,11 +186,13 @@ function PhoneCarousel({ images }: PhoneCarouselProps) {
           src={src}
           alt={`Vista ${index + 1} del plan personalizado`}
           fill
+          unoptimized
           priority={index === 0}
-          className={`absolute inset-0 object-cover transition-opacity duration-700 ease-out ${
+          loading={index === 0 ? "eager" : "lazy"}
+          className={`absolute inset-0 object-contain transition-opacity duration-700 ease-out ${
             index === activeIndex ? "opacity-100" : "opacity-0"
           }`}
-          sizes="(max-width: 640px) 180px, (max-width: 1024px) 220px, 260px"
+          sizes="(max-width: 640px) 250px, (max-width: 1024px) 320px, 420px"
         />
       ))}
     </div>
@@ -330,8 +332,8 @@ const ServicesClient = ({ services }: ServicesClientProps) => {
             <div className="relative overflow-hidden border-b border-white/10 bg-[radial-gradient(circle_at_20%_25%,rgba(236,72,153,0.35),transparent_58%),radial-gradient(circle_at_84%_20%,rgba(96,165,250,0.35),transparent_48%),linear-gradient(130deg,rgba(2,6,23,0.96),rgba(30,27,75,0.92),rgba(60,7,83,0.9))]">
               <div className="absolute -left-10 top-8 h-24 w-24 rounded-full bg-fuchsia-500/30 blur-2xl" />
               <div className="absolute right-1 top-3 h-20 w-20 rounded-full bg-blue-400/30 blur-2xl" />
-              <div className="relative mx-auto flex h-[23rem] w-full max-w-sm items-center justify-center px-5 py-6 sm:h-[28rem] sm:max-w-md sm:px-6 sm:py-8">
-                <div className="relative w-[14.2rem] sm:w-[17.5rem] aspect-[1076/1628]">
+              <div className="relative mx-auto flex h-[28rem] w-full max-w-md items-center justify-center px-4 py-6 sm:h-[40rem] sm:max-w-2xl sm:px-6 sm:py-8">
+                <div className="relative w-[16.5rem] sm:w-[24rem] aspect-[1076/1628]">
                   <div
                     className="absolute left-[8.8%] right-[8.8%] top-[5.7%] bottom-[5.6%] overflow-hidden rounded-[2.1rem] bg-black/70"
                     aria-label="Espacio para carrusel dentro del celular"
@@ -344,7 +346,7 @@ const ServicesClient = ({ services }: ServicesClientProps) => {
                     alt="Marco de celular para carrusel del plan personalizado"
                     fill
                     className="pointer-events-none select-none object-contain"
-                    sizes="(max-width: 640px) 220px, (max-width: 1024px) 280px, 320px"
+                    sizes="(max-width: 640px) 270px, (max-width: 1024px) 360px, 420px"
                   />
                 </div>
               </div>
