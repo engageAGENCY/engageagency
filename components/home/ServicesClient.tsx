@@ -205,6 +205,13 @@ const ServicesClient = ({ services }: ServicesClientProps) => {
   const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
 
+  useEffect(() => {
+    // Preload modal chunk and header image to avoid visible loading on first open.
+    void import("./ServiceRequestModal");
+    const preloadImage = new window.Image();
+    preloadImage.src = "/optimized/content-engage-1600.webp";
+  }, []);
+
   const openForm = (service: Service) => {
     setSelectedService(service);
     setIsFormOpen(true);

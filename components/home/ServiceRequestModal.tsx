@@ -208,11 +208,11 @@ const ServiceRequestModal = ({ service, onClose }: ServiceRequestModalProps) => 
           <div className="relative z-10 overflow-hidden border-b border-white/10">
             <div className="relative h-[96px]">
               <Image
-                src="/content-engage.png"
+                src="/optimized/content-engage-1600.webp"
                 alt="Engage agency"
                 fill
                 priority
-                sizes="100vw"
+                sizes="560px"
                 className="object-cover object-[center_62%]"
               />
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/10 via-transparent to-black/10" />
