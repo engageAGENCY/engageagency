@@ -131,7 +131,7 @@ function VideoPreview({ src, poster, title }: VideoPreviewProps) {
     <div className="relative h-full w-full">
       <video
         ref={videoRef}
-        className="h-full w-full object-cover"
+        className="h-full w-full bg-black object-contain"
         controls={started}
         playsInline
         preload="none"
@@ -222,8 +222,8 @@ const ServicesClient = ({ services }: ServicesClientProps) => {
   };
 
   return (
-    <section id="servicios" className="scroll-mt-28 sm:scroll-mt-32 lg:scroll-mt-36 py-16 sm:py-20 px-4 sm:px-6 md:px-10 border-t border-white/10">
-      <div className="max-w-6xl mx-auto space-y-12 sm:space-y-14">
+    <section id="servicios" className="scroll-mt-28 sm:scroll-mt-32 lg:scroll-mt-36 py-14 sm:py-16 lg:py-20 px-4 sm:px-6 md:px-8 border-t border-white/10">
+      <div className="mx-auto w-full max-w-[min(92rem,100%)] space-y-12 sm:space-y-14">
 
         <div className="space-y-6">
           <div className="text-center">
@@ -250,9 +250,9 @@ const ServicesClient = ({ services }: ServicesClientProps) => {
                 >
                   <div className="rounded-2xl overflow-hidden bg-gray-800/55">
                     <div className={`flex flex-col md:flex-row ${reversed ? "md:flex-row-reverse" : ""}`}>
-                      <div className="relative bg-black/60 md:w-[43%] lg:w-[40%] xl:w-[38%] md:flex-none">
+                      <div className="relative bg-black/60 md:w-[40%] lg:w-[37%] xl:w-[34%] md:flex-none md:flex md:items-center md:justify-center md:p-4 lg:p-5">
                         {videoUrl ? (
-                          <div className="relative w-full aspect-[9/16]">
+                          <div className="relative w-full aspect-[9/16] md:h-[min(68vh,40rem)] md:w-auto md:max-w-full">
                             {isDirectVideo(videoUrl) ? (
                               <VideoPreview
                                 src={videoUrl}
@@ -280,17 +280,17 @@ const ServicesClient = ({ services }: ServicesClientProps) => {
                             )}
                           </div>
                         ) : (
-                          <div className="aspect-[9/16] w-full flex items-center justify-center text-sm text-white/70">
+                          <div className="aspect-[9/16] w-full md:h-[min(68vh,40rem)] md:w-auto md:max-w-full flex items-center justify-center text-sm text-white/70">
                             Reel pendiente
                           </div>
                         )}
                       </div>
 
-                      <div className="p-6 sm:p-8 lg:p-10 flex flex-col md:w-[57%] lg:w-[60%] xl:w-[62%]">
-                        <div className="text-4xl sm:text-5xl font-bold text-blue-300">{service.number}</div>
+                      <div className="p-6 sm:p-8 lg:p-10 flex flex-col md:w-[60%] lg:w-[63%] xl:w-[66%]">
+                        <div className="text-[clamp(2rem,4.5vw,3.4rem)] font-bold text-blue-300">{service.number}</div>
                         <div className="space-y-2 mt-4">
-                          <h5 className="text-2xl sm:text-3xl font-bold leading-tight text-white">{service.title}</h5>
-                          <p className="text-white/80 text-base sm:text-lg text-balance">{service.description}</p>
+                          <h5 className="text-[clamp(1.6rem,3vw,2.35rem)] font-bold leading-tight text-white">{service.title}</h5>
+                          <p className="text-white/80 text-[clamp(1rem,1.5vw,1.2rem)] text-balance">{service.description}</p>
                         </div>
                         <ul className="space-y-2 text-sm sm:text-base text-white/90 mt-5">
                           {(Array.isArray(service.items) ? service.items : []).map((item: string, itemIndex: number) => (
@@ -340,7 +340,7 @@ const ServicesClient = ({ services }: ServicesClientProps) => {
               <div className="absolute -left-10 top-8 h-24 w-24 rounded-full bg-fuchsia-500/30 blur-2xl" />
               <div className="absolute right-1 top-3 h-20 w-20 rounded-full bg-blue-400/30 blur-2xl" />
               <div className="relative mx-auto flex w-full items-center justify-center px-3 py-6 sm:px-6 sm:py-8">
-                <div className="relative w-[clamp(17rem,72vw,22rem)] sm:w-[clamp(22rem,36vw,32rem)] aspect-[1076/1628]">
+                <div className="relative w-[clamp(15.5rem,66vw,19.5rem)] sm:w-[clamp(18.5rem,28vw,23.5rem)] aspect-[1076/1628]">
                   <div className="absolute inset-0 z-0 flex items-center justify-center" aria-label="Espacio para carrusel dentro del celular" data-carousel-slot="plan-personalizado">
                     <div className="absolute left-[15.5%] right-[15.5%] top-[1%] bottom-[5%] rounded-[2.15rem] bg-black shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05)]">
                       <div className="absolute inset-[1.8%] overflow-hidden rounded-[1.95rem] bg-black">

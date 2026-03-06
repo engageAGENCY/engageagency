@@ -38,20 +38,20 @@ const Header = () => {
         scrolled ? "bg-black/80 border-b border-white/10" : "bg-transparent"
       }`}
     >
-      <div className="container mx-auto flex justify-between items-center py-3 px-6 md:px-8">
+      <div className="container mx-auto flex justify-between items-center py-2 sm:py-2.5 px-4 sm:px-6 md:px-8">
         <Link href="/" className="flex items-center gap-3">
-          <div className="relative h-28 w-28 md:h-32 md:w-32 rounded-full overflow-hidden">
+          <div className="relative h-20 w-20 sm:h-24 sm:w-24 lg:h-28 lg:w-28 rounded-full overflow-hidden">
             <Image
               src="/logo-engage.jpg"
               alt="Engage Agency"
               fill
-              sizes="128px"
+              sizes="(max-width: 640px) 80px, (max-width: 1024px) 96px, 112px"
               priority
             />
           </div>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-8 text-sm uppercase tracking-wide">
+        <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-sm uppercase tracking-wide">
           {navLinks.map((link) => (
             <Link
               key={link.href}
