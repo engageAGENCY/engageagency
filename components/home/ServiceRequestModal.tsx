@@ -55,15 +55,18 @@ type ServiceRequestModalProps = {
 };
 
 const ServiceRequestModal = ({ service, onClose }: ServiceRequestModalProps) => {
-  const serviceTitle = service.title || "Servicio seleccionado";
+  const selectedServiceName = service.title || "Servicio seleccionado";
+  const requestTitle = "Personaliza nuestros servicios a tu medida";
+  const requestDescription =
+    "Cuentanos que necesitas y te enviamos una propuesta combinando los servicios ideales para tu negocio.";
   
   const defaultInterests = useMemo(() => {
-    const lowered = serviceTitle.toLowerCase();
+    const lowered = selectedServiceName.toLowerCase();
     if (service.serviceKind === "plan" || lowered.includes("redes") || lowered.includes("social")) {
       return ["Manejo de redes sociales"];
     }
     return [];
-  }, [service.serviceKind, serviceTitle]);
+  }, [service.serviceKind, selectedServiceName]);
 
   const [interests, setInterests] = useState<string[]>(defaultInterests);
   const [submitStatus, setSubmitStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
@@ -109,7 +112,7 @@ const ServiceRequestModal = ({ service, onClose }: ServiceRequestModalProps) => 
     const form = event.currentTarget;
     const formData = new FormData(form);
     const payload = {
-      selectedService: serviceTitle,
+      selectedService: requestTitle,
       companyName: String(formData.get("companyName") || "").trim(),
       companyRnc: String(formData.get("companyRnc") || "").trim(),
       contactEmail: String(formData.get("contactEmail") || "").trim(),
@@ -235,8 +238,10 @@ const ServiceRequestModal = ({ service, onClose }: ServiceRequestModalProps) => 
             <div className="absolute inset-0 bg-grid-small opacity-10 pointer-events-none" />
             <div className="relative grid gap-4">
               <div className="space-y-4">
-                <div className="rounded-2xl border border-white/10 bg-[radial-gradient(circle_at_14%_14%,rgba(236,72,153,0.14),transparent_44%),radial-gradient(circle_at_86%_16%,rgba(96,165,250,0.14),transparent_44%),linear-gradient(145deg,#07080f,#101326)] px-4 py-4 sm:px-5 sm:py-5">                  <h4 className="mt-2 text-xl font-semibold leading-tight text-white sm:text-2xl">{serviceTitle}</h4>                  <p className="mt-3 text-sm text-white/75">
-                    Completa los datos para enviarte una propuesta profesional alineada a tu negocio.
+                <div className="rounded-2xl border border-white/10 bg-[radial-gradient(circle_at_14%_14%,rgba(236,72,153,0.14),transparent_44%),radial-gradient(circle_at_86%_16%,rgba(96,165,250,0.14),transparent_44%),linear-gradient(145deg,#07080f,#101326)] px-4 py-4 sm:px-5 sm:py-5">
+                  <h4 className="mt-2 text-xl font-semibold leading-tight text-white sm:text-2xl">{requestTitle}</h4>
+                  <p className="mt-3 text-sm text-white/75">
+                    {requestDescription}
                   </p>
                   <div className="mt-4 flex flex-wrap gap-2 text-[0.65rem] text-white/72">
                     <span className="rounded-full border border-white/10 bg-black/40 px-3 py-1">Tiempo estimado: 3-5 min.</span>
