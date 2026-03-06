@@ -334,18 +334,16 @@ const ServicesClient = ({ services }: ServicesClientProps) => {
               <div className="absolute right-1 top-3 h-20 w-20 rounded-full bg-blue-400/30 blur-2xl" />
               <div className="relative mx-auto flex h-[31rem] w-full max-w-lg items-center justify-center px-3 py-6 sm:h-[48rem] sm:max-w-3xl sm:px-6 sm:py-8">
                 <div className="relative w-[18.2rem] sm:w-[30rem] aspect-[1076/1628]">
-                  <div
-                    className="absolute left-[8.8%] right-[8.8%] top-[5.7%] bottom-[5.6%] overflow-hidden rounded-[2.1rem] bg-black/70"
-                    aria-label="Espacio para carrusel dentro del celular"
-                    data-carousel-slot="plan-personalizado"
-                  >
-                    <PhoneCarousel images={planCarouselImages} />
+                  <div className="absolute inset-0 z-0 flex items-center justify-center" aria-label="Espacio para carrusel dentro del celular" data-carousel-slot="plan-personalizado">
+                    <div className="relative h-[84%] w-[73%] overflow-hidden rounded-[1.9rem] bg-black">
+                      <PhoneCarousel images={planCarouselImages} />
+                    </div>
                   </div>
                   <Image
                     src="/celular.png"
                     alt="Marco de celular para carrusel del plan personalizado"
                     fill
-                    className="pointer-events-none select-none object-contain"
+                    className="pointer-events-none z-10 select-none object-contain"
                     sizes="(max-width: 640px) 300px, (max-width: 1024px) 460px, 560px"
                   />
                 </div>
