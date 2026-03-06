@@ -215,7 +215,7 @@ const ServicesClient = ({ services }: ServicesClientProps) => {
   };
 
   return (
-    <section id="servicios" className="py-16 sm:py-20 px-4 sm:px-6 md:px-10 border-t border-white/10">
+    <section id="servicios" className="scroll-mt-28 sm:scroll-mt-32 lg:scroll-mt-36 py-16 sm:py-20 px-4 sm:px-6 md:px-10 border-t border-white/10">
       <div className="max-w-6xl mx-auto space-y-12 sm:space-y-14">
 
         <div className="space-y-6">
@@ -332,10 +332,10 @@ const ServicesClient = ({ services }: ServicesClientProps) => {
             <div className="relative overflow-hidden border-b border-white/10 bg-[radial-gradient(circle_at_20%_25%,rgba(236,72,153,0.35),transparent_58%),radial-gradient(circle_at_84%_20%,rgba(96,165,250,0.35),transparent_48%),linear-gradient(130deg,rgba(2,6,23,0.96),rgba(30,27,75,0.92),rgba(60,7,83,0.9))]">
               <div className="absolute -left-10 top-8 h-24 w-24 rounded-full bg-fuchsia-500/30 blur-2xl" />
               <div className="absolute right-1 top-3 h-20 w-20 rounded-full bg-blue-400/30 blur-2xl" />
-              <div className="relative mx-auto flex h-[31rem] w-full max-w-lg items-center justify-center px-3 py-6 sm:h-[48rem] sm:max-w-3xl sm:px-6 sm:py-8">
-                <div className="relative w-[18.2rem] sm:w-[30rem] aspect-[1076/1628]">
+              <div className="relative mx-auto flex w-full items-center justify-center px-3 py-6 sm:px-6 sm:py-8">
+                <div className="relative w-[clamp(17rem,72vw,22rem)] sm:w-[clamp(22rem,36vw,32rem)] aspect-[1076/1628]">
                   <div className="absolute inset-0 z-0 flex items-center justify-center" aria-label="Espacio para carrusel dentro del celular" data-carousel-slot="plan-personalizado">
-                    <div className="relative h-[84%] w-[73%] overflow-hidden rounded-[1.9rem] bg-black">
+                    <div className="relative h-[82%] w-[72%] overflow-hidden rounded-[1.9rem] bg-black">
                       <PhoneCarousel images={planCarouselImages} />
                     </div>
                   </div>
@@ -344,7 +344,7 @@ const ServicesClient = ({ services }: ServicesClientProps) => {
                     alt="Marco de celular para carrusel del plan personalizado"
                     fill
                     className="pointer-events-none z-10 select-none object-contain"
-                    sizes="(max-width: 640px) 300px, (max-width: 1024px) 460px, 560px"
+                    sizes="(max-width: 640px) 300px, (max-width: 1024px) 500px, 640px"
                   />
                 </div>
               </div>
