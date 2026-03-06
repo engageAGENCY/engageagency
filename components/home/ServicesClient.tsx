@@ -335,7 +335,7 @@ const ServicesClient = ({ services }: ServicesClientProps) => {
               <div className="relative mx-auto flex w-full items-center justify-center px-3 py-6 sm:px-6 sm:py-8">
                 <div className="relative w-[clamp(17rem,72vw,22rem)] sm:w-[clamp(22rem,36vw,32rem)] aspect-[1076/1628]">
                   <div className="absolute inset-0 z-0 flex items-center justify-center" aria-label="Espacio para carrusel dentro del celular" data-carousel-slot="plan-personalizado">
-                    <div className="relative h-[86%] w-[74%] rounded-[2.15rem] bg-black shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05)]">
+                    <div className="absolute left-[15.5%] right-[15.5%] -top-[3%] bottom-[2%] rounded-[2.15rem] bg-black shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05)]">
                       <div className="absolute inset-[1.8%] overflow-hidden rounded-[1.95rem] bg-black">
                         <PhoneCarousel images={planCarouselImages} />
                       </div>
