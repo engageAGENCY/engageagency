@@ -10,6 +10,10 @@ function urlFor(source: any) {
   return builder.image(source);
 }
 
+function optimizedSanityImage(source: any) {
+  return urlFor(source).auto("format").quality(80);
+}
+
 const Portfolio = async () => {
   let projects = [];
   try {
@@ -37,12 +41,16 @@ const Portfolio = async () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
           {projects.map((item: any, index: number) => {
+            const cardImageSrc = item.image?.asset
+              ? optimizedSanityImage(item.image).width(800).height(600).fit("crop").url()
+              : item.image?.src || null;
+
             const cardContent = (
               <div className="rounded-2xl bg-zinc-900 overflow-hidden flex flex-col shadow-lg shadow-black/20 transition-transform duration-200 group-hover:-translate-y-1">
-                {item.image && (item.image.src || item.image.asset) ? (
+                {cardImageSrc ? (
                   <div className="relative w-full aspect-[4/3]">
                     <Image
-                      src={item.image.src || urlFor(item.image).width(800).height(600).url()}
+                      src={cardImageSrc}
                       alt={item.title}
                       fill
                       className="object-cover"

@@ -14,6 +14,10 @@ function urlFor(source: any) {
   return builder.image(source);
 }
 
+function optimizedSanityImage(source: any) {
+  return urlFor(source).auto("format").quality(82).fit("max");
+}
+
 function resolveAspectRatio(width?: number, height?: number, fallback = 16 / 9) {
   if (!width || !height) return fallback;
   const ratio = width / height;
@@ -132,7 +136,7 @@ export default async function ProjectDetailPage({ params }: { params: { slug: st
                 style={{ aspectRatio: resolveAspectRatio(project.image.width, project.image.height, 16 / 9) }}
               >
                 <Image
-                  src={urlFor(project.image).width(2200).url()}
+                  src={optimizedSanityImage(project.image).width(2200).url()}
                   alt={project.title}
                   fill
                   className="object-contain bg-black"
@@ -183,7 +187,7 @@ export default async function ProjectDetailPage({ params }: { params: { slug: st
                     style={{ aspectRatio: resolveAspectRatio(image.width, image.height, 4 / 3) }}
                   >
                     <Image
-                      src={urlFor(image).width(1600).url()}
+                      src={optimizedSanityImage(image).width(1600).url()}
                       alt={image.alt || project.title}
                       fill
                       className="object-contain bg-black"
