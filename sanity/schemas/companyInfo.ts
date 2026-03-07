@@ -108,6 +108,18 @@ export default defineType({
       title: 'Instagram',
       type: 'string',
     }),
+    defineField({
+      name: 'googlePlaceId',
+      title: 'Google Place ID',
+      type: 'string',
+      description: 'ID del negocio en Google Maps (opcional si pegas el link de reseña).',
+    }),
+    defineField({
+      name: 'googleReviewUrl',
+      title: 'Link para dejar reseña en Google',
+      type: 'url',
+      description: 'Pega el enlace directo de reseñas. Si incluye placeid, se usa para cargar reseñas automáticamente.',
+    }),
   ],
   preview: {
     prepare() {

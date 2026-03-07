@@ -1,3 +1,5 @@
+import { getCompanyInfo } from "@/lib/sanity.queries";
+
 type ReviewCard = {
   author: string;
   time: string;
@@ -8,25 +10,30 @@ type ReviewCard = {
   source: "google";
 };
 
-const GOOGLE_PLACES_API_KEY = process.env.GOOGLE_PLACES_API_KEY;
-const GOOGLE_PLACES_ID = process.env.GOOGLE_PLACES_ID;
-const GOOGLE_WRITE_REVIEW_URL = GOOGLE_PLACES_ID
-  ? `https://search.google.com/local/writereview?placeid=${encodeURIComponent(GOOGLE_PLACES_ID)}`
-  : null;
-const GOOGLE_PLACE_URL = GOOGLE_PLACES_ID
-  ? `https://www.google.com/maps/place/?q=place_id:${encodeURIComponent(GOOGLE_PLACES_ID)}`
-  : null;
+const GOOGLE_PLACES_API_KEY = process.env.GOOGLE_PLACES_API_KEY?.trim() || "";
+const GOOGLE_PLACES_ID = process.env.GOOGLE_PLACES_ID?.trim() || "";
 
-const getGoogleReviews = async () => {
-  if (!GOOGLE_PLACES_API_KEY || !GOOGLE_PLACES_ID) {
+function extractPlaceIdFromUrl(input?: string | null) {
+  if (!input) return "";
+  try {
+    const parsed = new URL(input);
+    const placeId = parsed.searchParams.get("placeid");
+    return placeId?.trim() || "";
+  } catch {
+    return "";
+  }
+}
+
+const getGoogleReviews = async (apiKey: string, placeId: string) => {
+  if (!apiKey || !placeId) {
     return null;
   }
 
   const url = new URL("https://maps.googleapis.com/maps/api/place/details/json");
-  url.searchParams.set("place_id", GOOGLE_PLACES_ID);
+  url.searchParams.set("place_id", placeId);
   url.searchParams.set("fields", "rating,user_ratings_total,reviews");
   url.searchParams.set("language", "es");
-  url.searchParams.set("key", GOOGLE_PLACES_API_KEY);
+  url.searchParams.set("key", apiKey);
 
   const response = await fetch(url.toString(), {
     next: { revalidate: 3600 },
@@ -73,11 +80,32 @@ const GoogleWordmark = () => (
 );
 
 const Testimonials = async () => {
-  if (!GOOGLE_PLACES_ID) {
+  let companyInfo: any = null;
+  try {
+    companyInfo = await getCompanyInfo();
+  } catch (error) {
+    console.error("No se pudo obtener companyInfo para reseñas:", error);
+  }
+
+  const sanityPlaceId = String(companyInfo?.googlePlaceId || "").trim();
+  const sanityReviewUrl = String(companyInfo?.googleReviewUrl || "").trim();
+  const resolvedPlaceId =
+    GOOGLE_PLACES_ID || sanityPlaceId || extractPlaceIdFromUrl(sanityReviewUrl);
+
+  const writeReviewUrl =
+    sanityReviewUrl ||
+    (resolvedPlaceId
+      ? `https://search.google.com/local/writereview?placeid=${encodeURIComponent(resolvedPlaceId)}`
+      : "");
+  const googlePlaceUrl = resolvedPlaceId
+    ? `https://www.google.com/maps/place/?q=place_id:${encodeURIComponent(resolvedPlaceId)}`
+    : "";
+
+  if (!writeReviewUrl && !googlePlaceUrl) {
     return null;
   }
 
-  const googleData = await getGoogleReviews();
+  const googleData = await getGoogleReviews(GOOGLE_PLACES_API_KEY, resolvedPlaceId);
 
   const reviews: ReviewCard[] = googleData?.reviews?.length
     ? googleData.reviews
@@ -114,9 +142,9 @@ const Testimonials = async () => {
             </p>
             <GoogleWordmark />
             <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
-              {GOOGLE_WRITE_REVIEW_URL ? (
+              {writeReviewUrl ? (
                 <a
-                  href={GOOGLE_WRITE_REVIEW_URL}
+                  href={writeReviewUrl}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex rounded-full p-[1px] bg-[linear-gradient(90deg,#ffffff,#60a5fa,#a855f7,#ec4899,#ffffff)] animate-gradient-wave"
@@ -126,9 +154,9 @@ const Testimonials = async () => {
                   </span>
                 </a>
               ) : null}
-              {GOOGLE_PLACE_URL ? (
+              {googlePlaceUrl ? (
                 <a
-                  href={GOOGLE_PLACE_URL}
+                  href={googlePlaceUrl}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/5 px-5 py-2 text-xs sm:text-sm uppercase tracking-wide font-semibold text-white hover:bg-white/10 transition"
