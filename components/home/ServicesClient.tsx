@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export type Service = {
   number?: string;
@@ -200,6 +200,11 @@ function PhoneCarousel({ images }: PhoneCarouselProps) {
 }
 
 const ServiceRequestModal = dynamic(() => import("./ServiceRequestModal"), { ssr: false });
+const personalizedPlanPayload: Service = {
+  title: "Plan personalizado",
+  description: "Propuesta diseñada según objetivos, rubro y presupuesto.",
+  serviceKind: "plan",
+};
 
 const ServicesClient = ({ services }: ServicesClientProps) => {
   const [selectedService, setSelectedService] = useState<Service | null>(null);
@@ -212,14 +217,31 @@ const ServicesClient = ({ services }: ServicesClientProps) => {
     preloadImage.src = "/optimized/content-engage-1600.webp";
   }, []);
 
-  const openForm = (service: Service) => {
+  const openForm = useCallback((service: Service) => {
     setSelectedService(service);
     setIsFormOpen(true);
-  };
+  }, []);
 
-  const closeForm = () => {
+  const closeForm = useCallback(() => {
     setIsFormOpen(false);
-  };
+  }, []);
+
+  useEffect(() => {
+    const handleExternalOpen = (event: Event) => {
+      const customEvent = event as CustomEvent<Service | undefined>;
+      const payload = customEvent.detail;
+      if (payload && typeof payload === "object") {
+        openForm(payload);
+        return;
+      }
+      openForm(personalizedPlanPayload);
+    };
+
+    window.addEventListener("open-service-request-modal", handleExternalOpen as EventListener);
+    return () => {
+      window.removeEventListener("open-service-request-modal", handleExternalOpen as EventListener);
+    };
+  }, [openForm]);
 
   return (
     <section id="servicios" className="scroll-mt-28 sm:scroll-mt-32 lg:scroll-mt-36 py-14 sm:py-16 lg:py-20 px-4 sm:px-6 md:px-8 border-t border-white/10">
@@ -312,10 +334,10 @@ const ServicesClient = ({ services }: ServicesClientProps) => {
                         <div className="pt-6 mt-auto">
                           <button
                             type="button"
-                            onClick={() => openForm({ ...service, serviceKind: "service" })}
+                            onClick={() => openForm(personalizedPlanPayload)}
                             className="w-full rounded-full bg-white text-black text-xs sm:text-sm font-semibold uppercase tracking-wide py-3 hover:bg-zinc-200 transition"
                           >
-                            Solicitar este servicio
+                            Empezar plan personalizado
                           </button>
                         </div>
                       </div>
@@ -329,7 +351,7 @@ const ServicesClient = ({ services }: ServicesClientProps) => {
 
         <div className="space-y-6">
           <div className="text-center space-y-3">
-            <p className="text-xs uppercase tracking-[0.28em] text-white/55">Manejo de redes</p>
+            <p className="text-xs uppercase tracking-[0.28em] text-white/55">Plan personalizado</p>
             <h4 className="text-2xl sm:text-3xl font-bold">Empieza tu plan personalizado</h4>
             <p className="text-sm sm:text-base text-white/65 max-w-3xl mx-auto">
               Cuéntanos tu meta, presupuesto y prioridades. Te enviamos una propuesta hecha a medida.
@@ -381,13 +403,7 @@ const ServicesClient = ({ services }: ServicesClientProps) => {
 
               <button
                 type="button"
-                onClick={() =>
-                  openForm({
-                    title: "Manejo de redes - Plan personalizado",
-                    description: "Propuesta diseñada según objetivos, rubro y presupuesto.",
-                    serviceKind: "plan",
-                  })
-                }
+                onClick={() => openForm(personalizedPlanPayload)}
                 className="mt-6 rounded-full bg-white text-black text-xs font-semibold uppercase tracking-wide py-2.5 hover:bg-zinc-200 transition"
               >
                 Empezar plan personalizado
@@ -409,3 +425,4 @@ const ServicesClient = ({ services }: ServicesClientProps) => {
 };
 
 export default ServicesClient;
+

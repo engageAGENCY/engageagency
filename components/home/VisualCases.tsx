@@ -1,5 +1,6 @@
+"use client";
+
 import Image from "next/image";
-import Link from "next/link";
 
 type ShowcaseCard = {
   title: string;
@@ -66,6 +67,18 @@ function VisualCard({ card, priority = false }: VisualCardProps) {
 }
 
 export default function VisualCases() {
+  const openPersonalizedPlanForm = () => {
+    window.dispatchEvent(
+      new CustomEvent("open-service-request-modal", {
+        detail: {
+          title: "Plan personalizado",
+          description: "Propuesta diseñada según objetivos, rubro y presupuesto.",
+          serviceKind: "plan",
+        },
+      }),
+    );
+  };
+
   return (
     <section id="casos-visuales" className="py-16 sm:py-20 px-4 sm:px-6 md:px-10 border-t border-white/10">
       <div className="mx-auto w-full max-w-[min(92rem,100%)] space-y-8 sm:space-y-10">
@@ -88,12 +101,13 @@ export default function VisualCases() {
         </div>
 
         <div className="flex justify-center pt-2">
-          <Link
-            href="/contact"
+          <button
+            type="button"
+            onClick={openPersonalizedPlanForm}
             className="inline-flex items-center justify-center rounded-full bg-white text-black text-xs sm:text-sm font-semibold uppercase tracking-wide px-6 py-3 hover:bg-zinc-200 transition"
           >
             Solicitar propuesta
-          </Link>
+          </button>
         </div>
       </div>
     </section>

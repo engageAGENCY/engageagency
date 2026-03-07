@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { motion } from "framer-motion";
 import { X } from "lucide-react";
 import Image from "next/image";
@@ -55,28 +55,19 @@ type ServiceRequestModalProps = {
 };
 
 const ServiceRequestModal = ({ service, onClose }: ServiceRequestModalProps) => {
-  const selectedServiceName = service.title || "Servicio seleccionado";
   const requestTitle = "Personaliza nuestros servicios a tu medida";
   const requestDescription =
     "Cuentanos que necesitas y te enviamos una propuesta combinando los servicios ideales para tu negocio.";
-  
-  const defaultInterests = useMemo(() => {
-    const lowered = selectedServiceName.toLowerCase();
-    if (service.serviceKind === "plan" || lowered.includes("redes") || lowered.includes("social")) {
-      return ["Manejo de redes sociales"];
-    }
-    return [];
-  }, [service.serviceKind, selectedServiceName]);
 
-  const [interests, setInterests] = useState<string[]>(defaultInterests);
+  const [interests, setInterests] = useState<string[]>([]);
   const [submitStatus, setSubmitStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
 
   const showSocialPlan = interests.includes("Manejo de redes sociales");
 
   useEffect(() => {
-    setInterests(defaultInterests);
+    setInterests([]);
     setSubmitStatus("idle");
-  }, [defaultInterests]);
+  }, [service]);
 
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
@@ -179,7 +170,8 @@ const ServiceRequestModal = ({ service, onClose }: ServiceRequestModalProps) => 
 
       setSubmitStatus("success");
       form.reset();
-      setInterests(defaultInterests);    } catch (error) {
+      setInterests([]);
+    } catch (error) {
       console.error("Failed to submit service request", error);
       setSubmitStatus("error");
     }
@@ -247,24 +239,6 @@ const ServiceRequestModal = ({ service, onClose }: ServiceRequestModalProps) => 
                     <span className="rounded-full border border-white/10 bg-black/40 px-3 py-1">Tiempo estimado: 3-5 min.</span>
                     <span className="rounded-full border border-white/10 bg-black/40 px-3 py-1">Respuesta en 24-48 horas.</span>
                   </div>
-                </div>
-
-                <div className="rounded-2xl border border-white/10 bg-black/40 px-5 py-4">
-                  <p className="text-xs uppercase tracking-[0.28em] text-white/50">Qué sigue</p>
-                  <ul className="mt-3 space-y-2 text-xs text-white/70 sm:text-sm">
-                    <li className="flex items-start gap-2">
-                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-blue-300" />
-                      <span>Tiempo estimado: 3-5 min.</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-blue-300" />
-                      <span>Responde las preguntas marcadas con *.</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="mt-2 h-1.5 w-1.5 rounded-full bg-blue-300" />
-                      <span>Te contactamos por correo en 24-48 horas.</span>
-                    </li>
-                  </ul>
                 </div>
               </div>
 
