@@ -1,37 +1,21 @@
-import { getTestimonials } from "@/lib/sanity.queries";
-
-const hardcodedTestimonials = [
-  {
-    quote:
-      "Engage Agency ha sido un socio fundamental en nuestra transformaci\u00f3n digital. Su equipo de expertos nos ha ayudado a modernizar nuestros sistemas y a mejorar nuestra eficiencia operativa. \u00a1Los resultados han sido incre\u00edbles!",
-    author: "Juan P\u00e9rez",
-    role: "CEO, Innovatech",
-  },
-  {
-    quote:
-      "El equipo de Engage Agency es extremadamente profesional y talentoso. Nos han ayudado a crear una identidad de marca moderna y un sitio web incre\u00edble. \u00a1Estamos muy contentos con el resultado!",
-    author: "Mar\u00eda Garc\u00eda",
-    role: "Gerente de Marketing, Creative Solutions",
-  },
-  {
-    quote:
-      "Trabajar con Engage Agency ha sido una experiencia incre\u00edble. Su enfoque en la innovaci\u00f3n y la calidad es evidente en todo lo que hacen. \u00a1Los recomiendo encarecidamente a cualquiera que busque un socio de confianza para su pr\u00f3ximo proyecto!",
-    author: "Carlos Rodr\u00edguez",
-    role: "CTO, Tech Solutions",
-  },
-];
-
 type ReviewCard = {
   author: string;
   time: string;
   rating: number;
   text: string;
   avatar?: string;
-  source: "google" | "sanity";
+  authorUrl?: string;
+  source: "google";
 };
 
 const GOOGLE_PLACES_API_KEY = process.env.GOOGLE_PLACES_API_KEY;
 const GOOGLE_PLACES_ID = process.env.GOOGLE_PLACES_ID;
+const GOOGLE_WRITE_REVIEW_URL = GOOGLE_PLACES_ID
+  ? `https://search.google.com/local/writereview?placeid=${encodeURIComponent(GOOGLE_PLACES_ID)}`
+  : null;
+const GOOGLE_PLACE_URL = GOOGLE_PLACES_ID
+  ? `https://www.google.com/maps/place/?q=place_id:${encodeURIComponent(GOOGLE_PLACES_ID)}`
+  : null;
 
 const getGoogleReviews = async () => {
   if (!GOOGLE_PLACES_API_KEY || !GOOGLE_PLACES_ID) {
@@ -89,31 +73,25 @@ const GoogleWordmark = () => (
 );
 
 const Testimonials = async () => {
-  let testimonials: any[] = [];
-  try {
-    testimonials = await getTestimonials();
-  } catch (error) {
-    console.error("Fallo al obtener los testimonios de Sanity, usando datos harcodeados:", error);
-    testimonials = hardcodedTestimonials;
+  if (!GOOGLE_PLACES_ID) {
+    return null;
   }
 
   const googleData = await getGoogleReviews();
+
   const reviews: ReviewCard[] = googleData?.reviews?.length
-    ? googleData.reviews.map((review: any) => ({
-        author: review.author_name,
-        time: review.relative_time_description || "Hace poco",
-        rating: review.rating ?? 5,
-        text: review.text || "",
-        avatar: review.profile_photo_url,
-        source: "google",
-      }))
-    : testimonials.map((testimonial: any) => ({
-        author: testimonial.author,
-        time: testimonial.role || "Cliente",
-        rating: 5,
-        text: testimonial.quote,
-        source: "sanity",
-      }));
+    ? googleData.reviews
+        .filter((review: any) => review?.text && review?.author_name)
+        .map((review: any) => ({
+          author: review.author_name,
+          time: review.relative_time_description || "Hace poco",
+          rating: review.rating ?? 5,
+          text: review.text || "",
+          avatar: review.profile_photo_url,
+          authorUrl: review.author_url,
+          source: "google",
+        }))
+    : [];
 
   return (
     <section className="py-16 sm:py-20 px-4 sm:px-6 md:px-10 border-t border-white/10 bg-zinc-950">
@@ -123,7 +101,7 @@ const Testimonials = async () => {
             {"Rese\u00f1as"}
           </p>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-wide">
-            {googleData ? "Excelente" : "Lo que dicen nuestros clientes"}
+            Excelente
           </h2>
           <div className="flex flex-col items-center gap-2">
             <div className="flex items-center gap-1 text-2xl">
@@ -132,57 +110,90 @@ const Testimonials = async () => {
             <p className="text-gray-400 text-sm">
               {googleData
                 ? `A base de ${googleData.total} rese\u00f1as`
-                : "Testimonios que respaldan nuestro trabajo."}
+                : "Deja tu rese\u00f1a en Google y aparecera aqui."}
             </p>
-            {googleData ? <GoogleWordmark /> : null}
+            <GoogleWordmark />
+            <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
+              {GOOGLE_WRITE_REVIEW_URL ? (
+                <a
+                  href={GOOGLE_WRITE_REVIEW_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex rounded-full p-[1px] bg-[linear-gradient(90deg,#ffffff,#60a5fa,#a855f7,#ec4899,#ffffff)] animate-gradient-wave"
+                >
+                  <span className="rounded-full bg-black px-5 py-2 text-xs sm:text-sm uppercase tracking-wide font-semibold text-white">
+                    Dejar rese\u00f1a en Google
+                  </span>
+                </a>
+              ) : null}
+              {GOOGLE_PLACE_URL ? (
+                <a
+                  href={GOOGLE_PLACE_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/5 px-5 py-2 text-xs sm:text-sm uppercase tracking-wide font-semibold text-white hover:bg-white/10 transition"
+                >
+                  Ver en Google
+                </a>
+              ) : null}
+            </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 text-left">
-          {reviews.slice(0, 3).map((review, index) => (
-            <div
-              key={`${review.author}-${index}`}
-              className="bg-gray-900/60 border border-white/10 p-6 sm:p-7 rounded-2xl h-full flex flex-col gap-4"
-            >
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-full bg-white/10 flex items-center justify-center text-sm font-semibold text-white">
-                    {review.avatar ? (
-                      <img
-                        src={review.avatar}
-                        alt={review.author}
-                        className="h-10 w-10 rounded-full object-cover"
-                        loading="lazy"
-                        decoding="async"
-                        referrerPolicy="no-referrer"
-                      />
-                    ) : (
-                      review.author.slice(0, 1)
-                    )}
+        {reviews.length ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 text-left">
+            {reviews.slice(0, 3).map((review, index) => (
+              <div
+                key={`${review.author}-${index}`}
+                className="bg-gray-900/60 border border-white/10 p-6 sm:p-7 rounded-2xl h-full flex flex-col gap-4"
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="h-10 w-10 rounded-full bg-white/10 flex items-center justify-center text-sm font-semibold text-white">
+                      {review.avatar ? (
+                        <img
+                          src={review.avatar}
+                          alt={review.author}
+                          className="h-10 w-10 rounded-full object-cover"
+                          loading="lazy"
+                          decoding="async"
+                          referrerPolicy="no-referrer"
+                        />
+                      ) : (
+                        review.author.slice(0, 1)
+                      )}
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-semibold">{review.author}</h3>
+                      <p className="text-xs text-gray-400">{review.time}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-sm font-semibold">{review.author}</h3>
-                    <p className="text-xs text-gray-400">{review.time}</p>
-                  </div>
-                </div>
-                {review.source === "google" ? (
                   <span className="text-xs text-gray-500">Google</span>
+                </div>
+
+                <div className="flex items-center gap-1 text-lg">
+                  {renderStars(review.rating)}
+                </div>
+
+                <p className="text-gray-200 text-sm sm:text-base leading-relaxed">
+                  {review.text}
+                </p>
+                {review.authorUrl ? (
+                  <a
+                    href={review.authorUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-xs uppercase tracking-wide text-gray-400 hover:text-white transition"
+                  >
+                    Ver perfil
+                  </a>
                 ) : null}
               </div>
-
-              <div className="flex items-center gap-1 text-lg">
-                {renderStars(review.rating)}
-              </div>
-
-              <p className="text-gray-200 text-sm sm:text-base leading-relaxed">
-                {review.text}
-              </p>
-              <button className="text-xs uppercase tracking-wide text-gray-400 hover:text-white transition">
-                {"Leer m\u00e1s"}
-              </button>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-sm text-zinc-400">Aun no hay rese\u00f1as visibles para mostrar.</p>
+        )}
       </div>
     </section>
   );
