@@ -125,9 +125,7 @@ const Testimonials = async () => {
     <section className="py-16 sm:py-20 px-4 sm:px-6 md:px-10 border-t border-white/10 bg-zinc-950">
       <div className="max-w-6xl mx-auto text-center">
         <div className="mb-12 space-y-2">
-          <p className="text-xs uppercase tracking-[0.3em] text-gray-500">
-            {"Rese\u00f1as"}
-          </p>
+          <p className="text-xs uppercase tracking-[0.3em] text-gray-500">Reseñas</p>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-wide">
             Excelente
           </h2>
@@ -137,8 +135,8 @@ const Testimonials = async () => {
             </div>
             <p className="text-gray-400 text-sm">
               {googleData
-                ? `A base de ${googleData.total} rese\u00f1as`
-                : "Deja tu rese\u00f1a en Google y aparecera aqui."}
+                ? `A base de ${googleData.total} reseñas`
+                : "Deja tu reseña en Google y aparecerá aquí."}
             </p>
             <GoogleWordmark />
             <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
@@ -150,7 +148,7 @@ const Testimonials = async () => {
                   className="inline-flex rounded-full p-[1px] bg-[linear-gradient(90deg,#ffffff,#60a5fa,#a855f7,#ec4899,#ffffff)] animate-gradient-wave"
                 >
                   <span className="rounded-full bg-black px-5 py-2 text-xs sm:text-sm uppercase tracking-wide font-semibold text-white">
-                    Dejar rese\u00f1a en Google
+                    Dejar reseña en Google
                   </span>
                 </a>
               ) : null}
@@ -220,7 +218,7 @@ const Testimonials = async () => {
             ))}
           </div>
         ) : (
-          <p className="text-sm text-zinc-400">Aun no hay rese\u00f1as visibles para mostrar.</p>
+          <p className="text-sm text-zinc-400">Aún no hay reseñas visibles para mostrar.</p>
         )}
       </div>
     </section>
