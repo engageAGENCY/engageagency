@@ -31,7 +31,6 @@ export default async function AboutPage() {
                   alt="Engage agency"
                   fill
                   priority
-                  quality={95}
                   className="object-contain object-center"
                   sizes="(max-width: 640px) 96vw, (max-width: 1024px) 92vw, 1200px"
                 />
