@@ -21,16 +21,22 @@ export default async function AboutPage() {
           <p className="text-zinc-300 text-base sm:text-lg max-w-3xl mx-auto text-balance">{company.aboutText}</p>
         </header>
 
-        <div className="rounded-2xl p-[1px] bg-[linear-gradient(90deg,#ffffff,#60a5fa,#a855f7,#ec4899,#ffffff)] animate-gradient-wave">
-          <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-zinc-900/70 aspect-[2/1] sm:aspect-[2.2/1]">
-            <Image
-              src="/optimized/content-engage-1600.webp"
-              alt="Engage agency"
-              fill
-              priority
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 92vw, 1100px"
-            />
+        <div className="relative">
+          <div className="absolute -inset-3 rounded-[1.7rem] bg-[radial-gradient(circle_at_50%_0%,rgba(236,72,153,0.3),rgba(37,99,235,0.18),transparent_70%)] blur-2xl" />
+          <div className="relative rounded-[1.4rem] p-[1px] bg-[linear-gradient(90deg,#ffffff,#60a5fa,#a855f7,#ec4899,#ffffff)] animate-gradient-wave">
+            <div className="relative overflow-hidden rounded-[1.35rem] border border-white/10 bg-zinc-900/85 shadow-[0_20px_60px_rgba(0,0,0,0.45)]">
+              <div className="relative aspect-[1600/481] w-full">
+                <Image
+                  src="/optimized/content-engage-2800.webp"
+                  alt="Engage agency"
+                  fill
+                  priority
+                  quality={95}
+                  className="object-contain object-center"
+                  sizes="(max-width: 640px) 96vw, (max-width: 1024px) 92vw, 1200px"
+                />
+              </div>
+            </div>
           </div>
         </div>
 
