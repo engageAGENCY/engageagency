@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { getCompanyProfileWithFallback } from "@/lib/company-profile";
 
 const teamStructure = [
@@ -19,6 +20,19 @@ export default async function AboutPage() {
           <h1 className="text-4xl sm:text-5xl font-bold text-balance">{company.aboutHeadline}</h1>
           <p className="text-zinc-300 text-base sm:text-lg max-w-3xl mx-auto text-balance">{company.aboutText}</p>
         </header>
+
+        <div className="rounded-2xl p-[1px] bg-[linear-gradient(90deg,#ffffff,#60a5fa,#a855f7,#ec4899,#ffffff)] animate-gradient-wave">
+          <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-zinc-900/70 aspect-[2/1] sm:aspect-[2.2/1]">
+            <Image
+              src="/optimized/content-engage-1600.webp"
+              alt="Engage agency"
+              fill
+              priority
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 92vw, 1100px"
+            />
+          </div>
+        </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <article className="rounded-2xl border border-white/10 bg-zinc-900/60 p-5 text-center">
