@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     siteName: "Engage Agency",
     images: [
       {
-        url: "/logo-engage.jpg",
+        url: "/assets/brand/logo-engage.jpg",
         width: 800,
         height: 800,
         alt: "Engage Agency",
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     title: "Engage Agency",
     description:
       "Somos una agencia creativa enfocada en estrategia, contenido y resultados para marcas en crecimiento.",
-    images: ["/logo-engage.jpg"],
+    images: ["/assets/brand/logo-engage.jpg"],
   },
 };
 

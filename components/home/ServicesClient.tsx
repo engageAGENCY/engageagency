@@ -372,7 +372,7 @@ const ServicesClient = ({ services }: ServicesClientProps) => {
                     </div>
                   </div>
                   <Image
-                    src="/celular.png"
+                    src="/assets/frames/celular.png"
                     alt="Marco de celular para carrusel del plan personalizado"
                     fill
                     className="pointer-events-none z-10 select-none object-contain"

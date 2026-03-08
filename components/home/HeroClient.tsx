@@ -40,8 +40,8 @@ export default function HeroClient({ hero }: HeroClientProps) {
             aria-hidden
             className="mx-auto block w-[min(92vw,640px)] sm:w-[min(82vw,720px)] md:w-[min(70vw,720px)] lg:w-[min(60vw,700px)] aspect-[2.6/1] bg-[linear-gradient(90deg,#ffffff,#60a5fa,#a855f7,#ec4899,#ffffff)] animate-gradient-wave pb-1 sm:pb-2"
             style={{
-              WebkitMask: "url(/logo_engage_hero.svg) center / contain no-repeat",
-              mask: "url(/logo_engage_hero.svg) center / contain no-repeat",
+              WebkitMask: "url(/assets/brand/logo_engage_hero.svg) center / contain no-repeat",
+              mask: "url(/assets/brand/logo_engage_hero.svg) center / contain no-repeat",
             }}
           />
           <span className="block font-geo font-normal text-[clamp(1.75rem,6vw,3.5rem)] leading-[0.9] tracking-tight text-white mt-4 sm:mt-6 lg:mt-5">
