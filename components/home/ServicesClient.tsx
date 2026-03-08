@@ -33,7 +33,7 @@ const serviceVideoByNumber: Record<string, string> = {
   "02": "/videos/service-02.mp4",
   "03": "/videos/service-03.mp4",
   "04": "/videos/service-04.mp4",
-  "05": "/videos/service-05.mp4",
+  "05": "/videos/service-05.mp4?v=20260703",
   "06": "/videos/service-06.mp4",
 };
 
@@ -42,7 +42,7 @@ const servicePosterByNumber: Record<string, string> = {
   "02": "/videos/posters/service-02.jpg",
   "03": "/videos/posters/service-03.jpg",
   "04": "/videos/posters/service-04.jpg",
-  "05": "/videos/posters/service-05.jpg",
+  "05": "/videos/posters/service-05.jpg?v=20260703",
   "06": "/videos/posters/service-06.jpg",
 };
 
