@@ -1,3 +1,4 @@
+import ContactForm from "@/components/contact/ContactForm";
 import { getCompanyProfileWithFallback } from "@/lib/company-profile";
 
 function toWaLink(phone: string) {
@@ -15,7 +16,7 @@ export default async function ContactPage() {
           <p className="text-xs uppercase tracking-[0.3em] text-zinc-500">Contacto</p>
           <h1 className="text-4xl sm:text-5xl font-bold">Hablemos de tu proyecto</h1>
           <p className="text-base sm:text-lg text-zinc-400 max-w-2xl mx-auto text-balance">
-            Cuéntanos tus objetivos y te compartimos una propuesta enfocada en crecimiento, contenido y conversión.
+            Cuentanos tus objetivos y te compartimos una propuesta enfocada en crecimiento, contenido y conversion.
           </p>
         </div>
 
@@ -30,7 +31,7 @@ export default async function ContactPage() {
                 </a>
               </p>
               <p>
-                Teléfono:{" "}
+                Telefono:{" "}
                 <a href={`tel:${company.phone.replace(/[^\d+]/g, "")}`} className="text-white hover:text-blue-300">
                   {company.phone}
                 </a>
@@ -66,48 +67,8 @@ export default async function ContactPage() {
           </section>
 
           <section>
-            <h2 className="text-3xl font-bold mb-4">Envíanos un mensaje</h2>
-            <form className="space-y-4">
-              <div>
-                <label htmlFor="name" className="block text-zinc-400 mb-2">
-                  Nombre
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  className="w-full bg-gray-800 border border-gray-700 rounded-lg py-2.5 px-4 focus:outline-none focus:border-blue-500"
-                />
-              </div>
-              <div>
-                <label htmlFor="email" className="block text-zinc-400 mb-2">
-                  Correo electrónico
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  className="w-full bg-gray-800 border border-gray-700 rounded-lg py-2.5 px-4 focus:outline-none focus:border-blue-500"
-                />
-              </div>
-              <div>
-                <label htmlFor="message" className="block text-zinc-400 mb-2">
-                  Mensaje
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows={5}
-                  className="w-full bg-gray-800 border border-gray-700 rounded-lg py-2.5 px-4 focus:outline-none focus:border-blue-500"
-                />
-              </div>
-              <button
-                type="submit"
-                className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2.5 px-5 rounded-lg"
-              >
-                Enviar mensaje
-              </button>
-            </form>
+            <h2 className="text-3xl font-bold mb-4">Envianos un mensaje</h2>
+            <ContactForm />
           </section>
         </div>
       </div>

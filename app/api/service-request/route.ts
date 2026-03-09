@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
+import { resolveMailConfig } from "@/lib/mail-config";
 
 export const runtime = "nodejs";
 
@@ -175,37 +175,12 @@ export async function POST(request: Request) {
       return NextResponse.json({ ok: false, error: "missing_budget" }, { status: 400 });
     }
 
-    const smtpHost = process.env.SMTP_HOST;
-    const smtpPort = process.env.SMTP_PORT;
-    const smtpUser = process.env.SMTP_USER;
-    const smtpPass = process.env.SMTP_PASS;
-    const emailFrom = process.env.EMAIL_FROM;
-    const emailTo = process.env.EMAIL_TO;
+    const mailConfig = resolveMailConfig();
 
-    const missingEnv = [
-      ["SMTP_HOST", smtpHost],
-      ["SMTP_PORT", smtpPort],
-      ["SMTP_USER", smtpUser],
-      ["SMTP_PASS", smtpPass],
-      ["EMAIL_FROM", emailFrom],
-      ["EMAIL_TO", emailTo],
-    ].filter(([, value]) => !value);
-
-    if (missingEnv.length > 0) {
-      console.error("Missing email env vars:", missingEnv.map(([name]) => name).join(", "));
+    if (!mailConfig.ok) {
+      console.error("Missing email env vars:", mailConfig.missing.join(", "));
       return NextResponse.json({ ok: false, error: "email_not_configured" }, { status: 500 });
     }
-
-    const portNumber = Number(smtpPort);
-    const transporter = nodemailer.createTransport({
-      host: smtpHost,
-      port: portNumber,
-      secure: portNumber === 465,
-      auth: {
-        user: smtpUser,
-        pass: smtpPass,
-      },
-    });
 
     const interestSummary = [...data.interests, data.otherInterest].filter(Boolean).join(", ") || "-";
     const socialPlanSummary = [data.socialPlan, data.socialPlanOther].filter(Boolean).join(" / ") || "-";
@@ -250,9 +225,9 @@ export async function POST(request: Request) {
       </div>
     `;
 
-    await transporter.sendMail({
-      from: emailFrom,
-      to: emailTo,
+    await mailConfig.transporter.sendMail({
+      from: mailConfig.from,
+      to: mailConfig.to,
       replyTo: data.contactEmail || undefined,
       subject: `Nueva Solicitud de Servicio: ${data.selectedService || "Servicio"}`,
       text: lines.join("\n"),
