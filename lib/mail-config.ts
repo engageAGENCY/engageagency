@@ -32,7 +32,7 @@ export function resolveMailConfig(): MailConfigResult {
   const emailFrom = getEnv("EMAIL_FROM");
   const emailTo = getEnv("EMAIL_TO");
 
-  const hasCustomSmtp = Boolean(smtpHost || smtpPort || smtpUser || smtpPass || emailFrom || emailTo);
+  const hasCustomSmtp = Boolean(smtpHost || smtpPort || smtpUser || smtpPass);
 
   if (hasCustomSmtp) {
     const missing = [
@@ -40,8 +40,6 @@ export function resolveMailConfig(): MailConfigResult {
       ["SMTP_PORT", smtpPort],
       ["SMTP_USER", smtpUser],
       ["SMTP_PASS", smtpPass],
-      ["EMAIL_FROM", emailFrom],
-      ["EMAIL_TO", emailTo],
     ]
       .filter(([, value]) => !value)
       .map(([name]) => name);
@@ -49,6 +47,9 @@ export function resolveMailConfig(): MailConfigResult {
     if (missing.length > 0) {
       return { ok: false, missing };
     }
+
+    const resolvedFrom = emailFrom || buildFrom(DEFAULT_FROM_NAME, smtpUser);
+    const resolvedTo = emailTo || smtpUser;
 
     const portNumber = Number(smtpPort);
     const transporter = nodemailer.createTransport({
@@ -64,8 +65,8 @@ export function resolveMailConfig(): MailConfigResult {
     return {
       ok: true,
       transporter,
-      from: emailFrom,
-      to: emailTo,
+      from: resolvedFrom,
+      to: resolvedTo,
       mode: "custom",
     };
   }
